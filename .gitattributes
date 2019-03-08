@@ -1,0 +1,2 @@
+core.autocrlf=input
+core.whitespace trailing-space,space-before-tab,-cr-at-eol,-indent-with-non-tab,tab-in-indent,tabwidth=4
