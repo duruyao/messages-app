@@ -2,7 +2,8 @@
     <string name="app_name">Messages</string>
     <string name="inbox">Inbox</string>
     <string name="notice">Notice</string>
-    <string name="empty" />
     <string name="ticket">Ticket</string>
     <string name="PIN">PIN</string>
+    <string name="new_conversation">New Conversation</string>
+    <string name="settings">Settings</string>
 </resources>
