@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">信息</string>
+    <string name="inbox">收件箱</string>
+    <string name="notice">通知</string>
+    <string name="ticket">票据</string>
+    <string name="PIN">验证码</string>
+    <string name="new_conversation">新对话</string>
+    <string name="settings">设置</string>
+</resources>
