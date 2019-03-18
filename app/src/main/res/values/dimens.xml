@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fabCradleMargin">8dp</dimen>
+    <dimen name="nav_sheet_corner_radius">16dp</dimen>
+    <dimen name="nav_sheet_top_padding">8dp</dimen>
 </resources>
