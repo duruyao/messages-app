@@ -2,10 +2,14 @@ package com.dry.messagestest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -69,9 +73,9 @@ public class NewMessageActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         Log.d("Life", "[NewMessageActivity]: onPause()");
-//        if (MESSAGE_IS_SENT) {
-//            SMSMethod.getInstance(this).unregisterReceiver();
-//        }
+        if (MESSAGE_IS_SENT) {
+            SMSMethod.getInstance(this).unregisterReceiver();
+        }
         super.onPause();
     }
 
@@ -80,6 +84,14 @@ public class NewMessageActivity extends AppCompatActivity {
         MESSAGE_IS_SENT = false;
         Log.d("Life", "[NewMessageActivity]: onResume()");
         super.onResume();
+
+        // Current min API is 21, but the messages management can't be changed until API 22(Android 5.1.x).
+//        SubscriptionManager subscriptionManager = SubscriptionManager.from(getApplicationContext());
+//        List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
+//        for (SubscriptionInfo subscriptionInfo : subscriptionInfoList) {
+//            int subscriptionId = subscriptionInfo.getSubscriptionId();
+//            Log.d("110","subscriptionId:"+subscriptionId);
+//        }
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +142,7 @@ public class NewMessageActivity extends AppCompatActivity {
                     contactsPhone = txtPhoneNumber.getText().toString();
                     message = txtMessage.getText().toString();
                     // sendMessageByApp(contactsPhone, message);
+
                     if (message.length() <= 70) {
                         Log.d("110", "Length <= 70");
                         sendMessage(contactsPhone, message);
@@ -147,9 +160,6 @@ public class NewMessageActivity extends AppCompatActivity {
             }
         });
 
-        if (MESSAGE_IS_SENT) {
-            SMSMethod.getInstance(this).unregisterReceiver();
-        }
     }
 
     @Override
@@ -166,9 +176,9 @@ public class NewMessageActivity extends AppCompatActivity {
 
         // Make time as content of message for test.
         SimpleDateFormat sdf = new SimpleDateFormat();
-        sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+        sdf.applyPattern("[yy/MM/dd HH:mm:ss]");
         Date date = new Date();
-        String txtTimeForTest = sdf.format(date) + " I miss you again.";
+        String txtTimeForTest = sdf.format(date) + " i miss u.";
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
