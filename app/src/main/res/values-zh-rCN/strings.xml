@@ -7,4 +7,11 @@
     <string name="PIN">验证码</string>
     <string name="new_conversation">新对话</string>
     <string name="settings">设置</string>
+    <string name="new_message">新消息</string>
+    <string name="cancel">取消</string>
+    <string name="to">至：</string>
+    <string name="add">添加</string>
+    <string name="send">发送</string>
+    <string name="contacts">联系人</string>
+    <string name="type_content">输入消息内容</string>
 </resources>

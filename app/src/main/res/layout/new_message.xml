@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="1">
+
+    <com.dry.messagestest.NewMessageTitle
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_span="1"
+            android:gravity="center"
+            android:text="@string/to"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/txt_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_span="4"
+            android:gravity="center"
+            android:inputType="phone" />
+
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#001E90FF"
+            android:text="@string/add"
+            android:textAllCaps="false" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/txt_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_span="5"
+            android:hint="@string/type_content" />
+
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send"
+            android:textAllCaps="false" />
+    </TableRow>
+
+</TableLayout>
