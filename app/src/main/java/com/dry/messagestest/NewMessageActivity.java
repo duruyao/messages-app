@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SubscriptionInfo;
@@ -16,8 +18,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import top.gpg2.messages.R;
 
 public class NewMessageActivity extends AppCompatActivity {
@@ -31,14 +37,15 @@ public class NewMessageActivity extends AppCompatActivity {
     private String contactsName;
     public String message;
 
-    final private int CONTACTS_REQUEST_CODE = 1;
+    final private int CONTACTS_CODE = 1;
+    final private int SEND_SMS_REQUEST_CODE = 2;
     private boolean MESSAGE_IS_SENT = false;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data /*@Nullable Intent data*/) {
         Log.d("110", "I'm function onActivityResult.");
         switch (requestCode) {
-            case CONTACTS_REQUEST_CODE:
+            case CONTACTS_CODE:
                 if (resultCode == RESULT_OK) {
                     contactsPhone = data.getStringExtra("phoneKey");
                     contactsName = data.getStringExtra("nameKey");
@@ -97,7 +104,7 @@ public class NewMessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent_1 = new Intent(NewMessageActivity.this, ContactsSelectActivity.class);
-                startActivityForResult(intent_1, CONTACTS_REQUEST_CODE);
+                startActivityForResult(intent_1, CONTACTS_CODE);
             }
         });
 
@@ -139,20 +146,14 @@ public class NewMessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    contactsPhone = txtPhoneNumber.getText().toString();
-                    message = txtMessage.getText().toString();
-                    // sendMessageByApp(contactsPhone, message);
-
-                    if (message.length() <= 70) {
-                        Log.d("110", "Length <= 70");
-                        sendMessage(contactsPhone, message);
-                        MESSAGE_IS_SENT = true;
-                        Log.d("110", "Send a general message.");
+                    // Check `SEND_SMS` permission, if have it, read contacts, if not, request it.
+                    if (ContextCompat.checkSelfPermission(NewMessageActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(NewMessageActivity.this,
+                                new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_REQUEST_CODE);
+                        Log.d("110", "No permission, and I'll request it.");
                     } else {
-                        Log.d("110", "Length > 70");
-                        sendMultipartMessage(contactsPhone, message);
-                        MESSAGE_IS_SENT = true;
-                        Log.d("110", "Send a long message.");
+                        Log.d("110", "Have permission, and I'll send message.");
+                        send();
                     }
                 } catch (Exception e) {
                     Log.d("110", e.getMessage());
@@ -202,11 +203,45 @@ public class NewMessageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void sendMessage(String phoneNumber, String message) {
+    public void sendShortMessage(String phoneNumber, String message) {
         SMSMethod.getInstance(this).SendMessage(phoneNumber, message);
     }
 
     public void sendMultipartMessage(String phoneNumber, String message) {
         SMSMethod.getInstance(this).SendMessage2(phoneNumber, message);
+    }
+
+    public void send() {
+        contactsPhone = txtPhoneNumber.getText().toString();
+        message = txtMessage.getText().toString();
+        // sendMessageByApp(contactsPhone, message);
+
+        if (message.length() <= 70) {
+            Log.d("110", "Length <= 70");
+            sendShortMessage(contactsPhone, message);
+            MESSAGE_IS_SENT = true;
+            Log.d("110", "Send a general message.");
+        } else {
+            Log.d("110", "Length > 70");
+            sendMultipartMessage(contactsPhone, message);
+            MESSAGE_IS_SENT = true;
+            Log.d("110", "Send a long message.");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case SEND_SMS_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("110", "Request is successful, and I'll read contacts.");
+                    send();
+                } else {
+                    Log.d("110", "Request is failed.");
+                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 }
