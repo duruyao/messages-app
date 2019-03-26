@@ -93,7 +93,7 @@ public class ContactsSelectActivity extends AppCompatActivity {
         Cursor cursor = null;
         try {
             cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-                    , null, null, null, null);
+                    , null, null, null, ContactsContract.Contacts.SORT_KEY_PRIMARY);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     String displayName =
