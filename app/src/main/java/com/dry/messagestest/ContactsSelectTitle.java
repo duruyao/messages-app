@@ -12,6 +12,12 @@ import android.widget.Toast;
 import android.view.View.OnClickListener;
 import top.gpg2.messages.R;
 
+/**
+ * A class that do sth for title layout of ContactsSelectActivity.
+ *
+ * @author DuRuyao
+ * Create 19/03/10
+ */
 public class ContactsSelectTitle extends LinearLayout {
 
     private Button leftButton;

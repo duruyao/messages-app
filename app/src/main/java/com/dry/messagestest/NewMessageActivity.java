@@ -26,6 +26,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import top.gpg2.messages.R;
 
+/**
+ * An activity to make a new message.
+ *
+ * @author DuRuyao
+ * Create 19/03/05
+ */
 public class NewMessageActivity extends AppCompatActivity {
 
     private EditText txtPhoneNumber;
@@ -56,7 +62,6 @@ public class NewMessageActivity extends AppCompatActivity {
                 break;
             default:
         }
-        // super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -92,13 +97,13 @@ public class NewMessageActivity extends AppCompatActivity {
         Log.d("Life", "[NewMessageActivity]: onResume()");
         super.onResume();
 
-        // Current min API is 21, but the messages management can't be changed until API 22(Android 5.1.x).
-//        SubscriptionManager subscriptionManager = SubscriptionManager.from(getApplicationContext());
-//        List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
-//        for (SubscriptionInfo subscriptionInfo : subscriptionInfoList) {
-//            int subscriptionId = subscriptionInfo.getSubscriptionId();
-//            Log.d("110","subscriptionId:"+subscriptionId);
-//        }
+        /* Current min API is 21, but the messages management can't be changed until API 22(Android 5.1.x). */
+        /* SubscriptionManager subscriptionManager = SubscriptionManager.from(getApplicationContext());
+        List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
+        for (SubscriptionInfo subscriptionInfo : subscriptionInfoList) {
+            int subscriptionId = subscriptionInfo.getSubscriptionId();
+            Log.d("110","subscriptionId:"+subscriptionId);
+        } */
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +151,7 @@ public class NewMessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    // Check `SEND_SMS` permission, if have it, read contacts, if not, request it.
+                    /* Check `SEND_SMS` permission, if have it, read contacts, if not, request it. */
                     if (ContextCompat.checkSelfPermission(NewMessageActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(NewMessageActivity.this,
                                 new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_REQUEST_CODE);
@@ -175,7 +180,7 @@ public class NewMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_message);
 
-        // Make time as content of message for test.
+        /* Make time as content of message for test. */
         SimpleDateFormat sdf = new SimpleDateFormat();
         sdf.applyPattern("[yy/MM/dd HH:mm:ss]");
         Date date = new Date();

@@ -3,28 +3,45 @@ package com.dry.messagestest;
 import java.lang.annotation.Documented;
 
 /**
- * Conversation: class of conversation
+ * A class of conversation.
  *
  * @author DuRuyao
  * @version 1.0
- * Create 3/26/19 10:36 AM
- * Update [yy/mm/dd hh:mm] [name] [description]
+ * Create 19/03/26 10:36 AM
+ * Update [1] [yy/mm/dd hh:mm] [name] [description]
  */
 public class Conversation {
 
+    private final int RECEIVED = 1;
+    private final int SENT = 2;
+    private final boolean BE_READ = true;
+    private final boolean BE_NOT_READ = false;
+
     private String address;
-    private String person;
+    private int person;
     private String body;
-    private String date;
-    private String type;
+    private long date;
+    private int type;
     private boolean read;
 
     /**
-     * Conversation: constructor
+     * Constructor of Conversation class.
+     *
+     * @param address The phone number of contract.
+     * @param body    The text of message.
      */
-    public Conversation() {
-
+    public Conversation(String address, String body) {
+        this.address = address;
+        this.body = body;
 
     }
-    
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public String getBody() {
+        return this.body;
+    }
+
 }

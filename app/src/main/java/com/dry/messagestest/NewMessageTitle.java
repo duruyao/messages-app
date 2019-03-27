@@ -10,6 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import top.gpg2.messages.R;
 
+/**
+ * A class that do sth for title layout of NewMessageActivity.
+ *
+ * @author DuRuyao
+ * Create 19/3/10
+ */
 public class NewMessageTitle extends LinearLayout {
 
     private Button leftButton;

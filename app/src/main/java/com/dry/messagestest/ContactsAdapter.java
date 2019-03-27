@@ -18,16 +18,30 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * An adapter class that connects RecyclerView and List.
+ *
+ * @author DuRuyao
+ * Create 19/03/15
+ */
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
     private List<Contacts> contactsList;
     private Context context;
 
+    /**
+     * An internal class to cache instance of controls.
+     */
     static class ViewHolder extends RecyclerView.ViewHolder {
         View ContactsView;
         TextView contactsName;
         TextView contactsPhoneNum;
 
+        /**
+         * Constructor of ViewHolder class.
+         *
+         * @param view The outermost layout of item of RecyclerView.
+         */
         private ViewHolder(View view) {
             super(view);
             ContactsView = view;
@@ -36,17 +50,31 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         }
     }
 
+    /**
+     * Constructor of ContactsAdapter class to import data list.
+     *
+     * @param context      Current context.
+     * @param contactsList List of contracts.
+     */
     public ContactsAdapter(Context context, List<Contacts> contactsList) {
         this.contactsList = contactsList;
         this.context = context;
     }
 
+    /**
+     * Get a ViewHolder that contains of the item of RecyclerLayout.
+     *
+     * @return A instance of ViewHolder.
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        /* Load the item of RecyclerLayout. */
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.contacts_item,
                 parent, false);
+        /* Create instance of ViewHolder by passing the view parameter. */
         final ViewHolder holder = new ViewHolder(view);
+
         holder.ContactsView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -58,7 +86,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 intent_1.putExtra("phoneKey", contacts.getPhoneNumber());
                 intent_1.putExtra("nameKey", contacts.getName());
                 Toast.makeText(v.getContext(),
-                        "Select: " + contacts.getName() + " " + contacts.getPhoneNumber(),
+                        "Select " + contacts.getName() + " " + contacts.getPhoneNumber(),
                         Toast.LENGTH_SHORT).show();
                 Activity activity = getActivity(context);
                 Log.d("110", "Get current Activity");
@@ -68,7 +96,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             }
         });
-
+        /* Return the instance of VIewHolder. */
         return holder;
     }
 
@@ -80,11 +108,22 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         holder.contactsPhoneNum.setText(contacts.getPhoneNumber());
     }
 
+    /**
+     * Get number of item of RecyclerView.
+     *
+     * @return A number.
+     */
     @Override
     public int getItemCount() {
         return contactsList.size();
     }
 
+    /**
+     * Get current activity.
+     *
+     * @param context Current context.
+     * @return An activity.
+     */
     private Activity getActivity(Context context) {
         while (!(context instanceof Activity) && context instanceof ContextWrapper) {
             context = ((ContextWrapper) context).getBaseContext();

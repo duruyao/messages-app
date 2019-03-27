@@ -7,6 +7,11 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * A class to control keyboard.
+ * @author DuRuyao
+ * Create 19/03/10
+ */
 public class KeyboardControl {
 
     public static void showKeyboard(View view) {

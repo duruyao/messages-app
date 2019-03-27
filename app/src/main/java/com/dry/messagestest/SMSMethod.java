@@ -10,6 +10,12 @@ import android.telephony.SmsManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class about methods of SMS.
+ *
+ * @author DuRuyao
+ * Create 19/03/20
+ */
 public class SMSMethod {
     private static SMSMethod mSMSmsMethod;
     public static String SMS_SEND_ACTION = "SMS_SEND_ACTION";
@@ -37,22 +43,23 @@ public class SMSMethod {
 
 
     public void SendMessage(String strDestAddress, String strMessage) {
-        /* 建立SmsManager对象 */
+        /* Make instance of SmsManager. */
         SmsManager smsManager = SmsManager.getDefault();
+
+        /* The following line is suitable of API 22(Android 5.1.x) or higher. */
         // SmsManager smsManager1 = SmsManager.getSmsManagerForSubscriptionId(subId);
         try {
-            /* 建立自定义Action常数的Intent(给PendingIntent参数之用) */
+            /* Make instance of Intent that is imported self-defined Action. */
             Intent itSend = new Intent(SMS_SEND_ACTION);
             Intent itDeliver = new Intent(SMS_DELIVERED_ACTION);
 
-            /* sentIntent参数为传送后接受的广播信息PendingIntent */
+            /* Make instance of PendingIntent to start two broadcasts while sending message. */
             PendingIntent sendPI = PendingIntent.getBroadcast(context, 0, itSend, 0);
-
-            /* deliveryIntent参数为送达后接受的广播信息PendingIntent */
             PendingIntent deliverPI = PendingIntent.getBroadcast(context, 0, itDeliver, 0);
+            /* Get content of message.*/
             List<String> divideContents = smsManager.divideMessage(strMessage);
             for (String text : divideContents) {
-                /* 发送SMS短信，注意倒数的两个PendingIntent参数 */
+                /* Send SMS. */
                 smsManager.sendTextMessage(strDestAddress, null, text, sendPI, deliverPI);
             }
 
@@ -65,19 +72,16 @@ public class SMSMethod {
         ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
         ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
 
-
-        /* 建立SmsManager对象 */
         SmsManager smsManager = SmsManager.getDefault();
+        /* The following line is suitable of API 22(Android 5.1.x) or higher. */
         // SmsManager smsManager1 = SmsManager.getSmsManagerForSubscriptionId(subId);
         try {
-            /* 建立自定义Action常数的Intent(给PendingIntent参数之用) */
+            /* Make instance of Intent that is imported self-defined Action. */
             Intent itSend = new Intent(SMS_SEND_ACTION);
             Intent itDeliver = new Intent(SMS_DELIVERED_ACTION);
 
-            /* sentIntent参数为传送后接受的广播信息PendingIntent */
+            /* Make instance of PendingIntent to start two broadcasts while sending message. */
             PendingIntent sendPI = PendingIntent.getBroadcast(context, 0, itSend, 0);
-
-            /* deliveryIntent参数为送达后接受的广播信息PendingIntent */
             PendingIntent deliverPI = PendingIntent.getBroadcast(context, 0, itDeliver, 0);
             ArrayList<String> messageArray = smsManager.divideMessage(strMessage);
 
@@ -85,7 +89,7 @@ public class SMSMethod {
                 sentPendingIntents.add(i, sendPI);
                 deliveredPendingIntents.add(i, deliverPI);
             }
-            /* 发送SMS短信，注意倒数的两个PendingIntent参数 */
+            /* Send SMS. */
             smsManager.sendMultipartTextMessage(strDestAddress, null, messageArray,
                     sentPendingIntents, deliveredPendingIntents);
 
@@ -94,7 +98,9 @@ public class SMSMethod {
         }
     }
 
-
+    /**
+     * Register a receiver that listening to broadcast.
+     */
     public void registerReceiver() {
         IntentFilter intentFilter;
         intentFilter = new IntentFilter(SMS_SEND_ACTION);
@@ -106,6 +112,9 @@ public class SMSMethod {
         context.registerReceiver(deliveredSMSReceiver, intentFilter);
     }
 
+    /**
+     * Unregister a receiver that listening to broadcast.
+     */
     public void unregisterReceiver() {
         if (sendSMSReceiver != null) {
             context.unregisterReceiver(sendSMSReceiver);

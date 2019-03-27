@@ -19,6 +19,12 @@ import top.gpg2.messages.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An activity to show and allow user to select contact.
+ *
+ * @author DuRuyao
+ * Create 19/03/15
+ */
 public class ContactsSelectActivity extends AppCompatActivity {
     final private int READ_CONTACTS_REQUEST_CODE = 1;
     private List<Contacts> contactsList = new ArrayList<>();
@@ -81,7 +87,7 @@ public class ContactsSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_select);
 
-        // Hide default title.
+        /* Hide default title. */
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();

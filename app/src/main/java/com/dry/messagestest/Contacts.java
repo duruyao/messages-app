@@ -1,5 +1,11 @@
 package com.dry.messagestest;
 
+/**
+ * A class of contacts.
+ *
+ * @author DuRuyao
+ * Create 19/03/20
+ */
 public class Contacts {
     private String name;
     private String phoneNumber;
