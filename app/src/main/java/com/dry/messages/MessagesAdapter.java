@@ -79,13 +79,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent();
-                Log.d("110", "Create a Intent.");
                 int position = holder.getAdapterPosition();
                 Messages messages = messagesList.get(position);
-                Toast.makeText(v.getContext(),
-                        messages.getAddress() + ": " + messages.getBody(),
-                        Toast.LENGTH_SHORT).show();
+                String toastText = "Address: "+messages.getAddress() + "\nPerson:  " + messages.getPerson() + "\nDate: " + messages.getDate() + "\nType: "
+                        + messages.getType() + "\nRead: "+messages.getRead() + "\nBody: " + messages.getBody();
+                Toast.makeText(v.getContext(), toastText, Toast.LENGTH_SHORT).show();
 
             }
         });

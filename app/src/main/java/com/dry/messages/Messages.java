@@ -20,7 +20,7 @@ public class Messages {
     private String body;
     private long date;
     private int type;
-    private boolean read;
+    private int read;
 
     /**
      * Constructor of Messages class.
@@ -28,9 +28,13 @@ public class Messages {
      * @param address The phone number of contract.
      * @param body    The text of message.
      */
-    public Messages(String address, String body) {
+    public Messages(String address, int person, String body, long date, int type, int read) {
         this.address = address;
+        this.person = person;
         this.body = body;
+        this.date = date;
+        this.type = type;
+        this.read = read;
 
     }
 
@@ -38,8 +42,24 @@ public class Messages {
         return this.address;
     }
 
+    public int getPerson() {
+        return this.person;
+    }
+
     public String getBody() {
         return this.body;
+    }
+
+    public long getDate() {
+        return this.date;
+    }
+
+    public int getType() {
+        return this.type;
+    }
+
+    public int getRead() {
+        return this.read;
     }
 
 }
