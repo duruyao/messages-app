@@ -1,4 +1,4 @@
-package com.dry.messagestest;
+package com.dry.messages;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,7 +19,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * An adapter class that connects RecyclerView and List.
+ * An adapter class that connects RecyclerView and List of contacts.
  *
  * @author DuRuyao
  * Create 19/03/15
@@ -33,7 +33,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
      * An internal class to cache instance of controls.
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
-        View ContactsView;
+        View contactsView;
         TextView contactsName;
         TextView contactsPhoneNum;
 
@@ -44,14 +44,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
          */
         private ViewHolder(View view) {
             super(view);
-            ContactsView = view;
+            contactsView = view;
             contactsName = (TextView) view.findViewById(R.id.contacts_name);
             contactsPhoneNum = (TextView) view.findViewById(R.id.contacts_phone_num);
         }
     }
 
     /**
-     * Constructor of ContactsAdapter class to import data list.
+     * Constructor of MessagesAdapter class to import data list.
      *
      * @param context      Current context.
      * @param contactsList List of contracts.
@@ -75,7 +75,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         /* Create instance of ViewHolder by passing the view parameter. */
         final ViewHolder holder = new ViewHolder(view);
 
-        holder.ContactsView.setOnClickListener(new View.OnClickListener() {
+        holder.contactsView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -96,7 +96,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             }
         });
-        /* Return the instance of VIewHolder. */
+        /* Return the instance of ViewHolder. */
         return holder;
     }
 

@@ -1,4 +1,4 @@
-package com.dry.messagestest;
+package com.dry.messages;
 
 /**
  * A class of contacts.

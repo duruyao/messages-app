@@ -1,4 +1,4 @@
-# Add Commit Message Template
+# Add Commit Messages Template
 
 **Open the configuration file.**
 

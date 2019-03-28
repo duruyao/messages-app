@@ -1,4 +1,4 @@
-package com.dry.messagestest;
+package com.dry.messages;
 
 import android.content.Context;
 import android.view.View;

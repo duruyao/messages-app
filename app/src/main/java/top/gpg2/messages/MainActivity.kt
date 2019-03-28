@@ -4,10 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.dry.messagestest.NewMessageActivity
+import com.dry.messages.NewMessageActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.action_new_conversation -> {
-                toast("New Message Activity")
+                toast("New Messages Activity")
                 val intent = Intent(this, NewMessageActivity::class.java)
                 // start your next activity
                 startActivity(intent)

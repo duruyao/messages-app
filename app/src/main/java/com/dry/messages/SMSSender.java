@@ -1,4 +1,4 @@
-package com.dry.messagestest;
+package com.dry.messages;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,34 +11,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class about methods of SMS.
+ * A class about sending of SMS.
  *
  * @author DuRuyao
  * Create 19/03/20
  */
-public class SMSMethod {
-    private static SMSMethod mSMSmsMethod;
+public class SMSSender {
+    private static SMSSender smsSender;
     public static String SMS_SEND_ACTION = "SMS_SEND_ACTION";
     public static String SMS_DELIVERED_ACTION = "SMS_DELIVERED_ACTION";
 
-    private SMSReceiver sendSMSReceiver, deliveredSMSReceiver;
+    private SMSBroadcastReceiver sendSMSReceiver, deliveredSMSReceiver;
 
     private Context context;
 
-    private SMSMethod(Context context) {
+    private SMSSender(Context context) {
         this.context = context;
         registerReceiver();
     }
 
-    public static SMSMethod getInstance(Context context) {
-        if (mSMSmsMethod == null) {
-            synchronized (SMSMethod.class) {
-                if (mSMSmsMethod == null) {
-                    mSMSmsMethod = new SMSMethod(context);
+    public static SMSSender getInstance(Context context) {
+        if (smsSender == null) {
+            synchronized (SMSSender.class) {
+                if (smsSender == null) {
+                    smsSender = new SMSSender(context);
                 }
             }
         }
-        return mSMSmsMethod;
+        return smsSender;
     }
 
 
@@ -104,11 +104,11 @@ public class SMSMethod {
     public void registerReceiver() {
         IntentFilter intentFilter;
         intentFilter = new IntentFilter(SMS_SEND_ACTION);
-        sendSMSReceiver = new SMSReceiver();
+        sendSMSReceiver = new SMSBroadcastReceiver();
         context.registerReceiver(sendSMSReceiver, intentFilter);
 
         intentFilter = new IntentFilter(SMS_DELIVERED_ACTION);
-        deliveredSMSReceiver = new SMSReceiver();
+        deliveredSMSReceiver = new SMSBroadcastReceiver();
         context.registerReceiver(deliveredSMSReceiver, intentFilter);
     }
 

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <receiver android:name="com.dry.messagestest.SMSReceiver" />
+        <receiver android:name="com.dry.messages.SMSBroadcastReceiver" />
 
         <activity
             android:name="MainActivity"
@@ -30,13 +30,13 @@
         </activity>
 
         <activity
-            android:name="com.dry.messagestest.ContactsSelectActivity"
+            android:name="com.dry.messages.ContactsSelectActivity"
             android:launchMode="singleTask">
 
         </activity>
 
         <activity
-            android:name="com.dry.messagestest.NewMessageActivity"
+            android:name="com.dry.messages.NewMessageActivity"
             android:launchMode="singleTask">
 
             <intent-filter>

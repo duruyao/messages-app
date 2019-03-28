@@ -1,4 +1,4 @@
-package com.dry.messagestest;
+package com.dry.messages;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,7 +21,7 @@ public class NewMessageTitle extends LinearLayout {
     private Button leftButton;
     private Button rightButton;
     private TextView centerTitle;
-    // final private String CENTER_TITLE_TEXT = "New Message";
+    // final private String CENTER_TITLE_TEXT = "New Messages";
     // final private String LEFT_BUTTON_TEXT = "";
     // final private String RIGHT_BUTTON_TEXT = "Cancel";
 

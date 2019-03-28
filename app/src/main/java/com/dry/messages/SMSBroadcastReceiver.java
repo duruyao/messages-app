@@ -1,4 +1,4 @@
-package com.dry.messagestest;
+package com.dry.messages;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -9,16 +9,16 @@ import android.widget.Toast;
 import android.telephony.SmsManager;
 
 /**
- * A class to listen to the situation about sending and arriving of SMS.
+ * A class as receiver to listen to the Broadcast about sending and arriving of SMS.
  *
  * @author DuRuyao
  * Create 19/03/20
  */
-public class SMSReceiver extends BroadcastReceiver {
+public class SMSBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(SMSMethod.SMS_SEND_ACTION)) {
+        if (intent.getAction().equals(SMSSender.SMS_SEND_ACTION)) {
             try {
 
                 switch (getResultCode()) {
@@ -39,11 +39,11 @@ public class SMSReceiver extends BroadcastReceiver {
                 e.printStackTrace();
 
             }
-        } else if (intent.getAction().equals(SMSMethod.SMS_DELIVERED_ACTION)) {
+        } else if (intent.getAction().equals(SMSSender.SMS_DELIVERED_ACTION)) {
             try {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(context, "Message arrived", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Messages arrived", Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         /* 短信未送达 */

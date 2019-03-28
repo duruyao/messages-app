@@ -1,17 +1,13 @@
-package com.dry.messagestest;
+package com.dry.messages;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -86,7 +82,7 @@ public class NewMessageActivity extends AppCompatActivity {
     protected void onPause() {
         Log.d("Life", "[NewMessageActivity]: onPause()");
         if (MESSAGE_IS_SENT) {
-            SMSMethod.getInstance(this).unregisterReceiver();
+            SMSSender.getInstance(this).unregisterReceiver();
         }
         super.onPause();
     }
@@ -209,11 +205,11 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     public void sendShortMessage(String phoneNumber, String message) {
-        SMSMethod.getInstance(this).SendMessage(phoneNumber, message);
+        SMSSender.getInstance(this).SendMessage(phoneNumber, message);
     }
 
     public void sendMultipartMessage(String phoneNumber, String message) {
-        SMSMethod.getInstance(this).SendMessage2(phoneNumber, message);
+        SMSSender.getInstance(this).SendMessage2(phoneNumber, message);
     }
 
     public void send() {
