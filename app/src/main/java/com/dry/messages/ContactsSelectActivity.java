@@ -68,7 +68,7 @@ public class ContactsSelectActivity extends AppCompatActivity {
             readContacts();
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.contacts_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.contacts_recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         ContactsAdapter adapter = new ContactsAdapter(ContactsSelectActivity.this, contactsList);

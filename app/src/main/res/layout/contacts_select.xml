@@ -15,7 +15,7 @@
     <!--</ListView>-->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/contacts_recycler_view"
+        android:id="@+id/contacts_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

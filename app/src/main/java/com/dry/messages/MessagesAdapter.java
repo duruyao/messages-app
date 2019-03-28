@@ -83,16 +83,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                 Log.d("110", "Create a Intent.");
                 int position = holder.getAdapterPosition();
                 Messages messages = messagesList.get(position);
-                intent1.putExtra("addressKey", messages.getAddress());
-                intent1.putExtra("bodyKey", messages.getBody());
                 Toast.makeText(v.getContext(),
                         messages.getAddress() + ": " + messages.getBody(),
                         Toast.LENGTH_SHORT).show();
-                Activity activity = getActivity(context);
-                Log.d("110", "Get current Activity");
-                activity.setResult(RESULT_OK, intent1);
-                Log.d("110", "Return a Intent.");
-                activity.finish();
 
             }
         });

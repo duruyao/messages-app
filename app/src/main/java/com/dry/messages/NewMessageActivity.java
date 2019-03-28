@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,66 +102,10 @@ public class NewMessageActivity extends AppCompatActivity {
             Log.d("110","subscriptionId:"+subscriptionId);
         } */
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent_1 = new Intent(NewMessageActivity.this, ContactsSelectActivity.class);
-                startActivityForResult(intent_1, CONTACTS_CODE);
-            }
-        });
-
-        txtPhoneNumber.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                sendButton.setEnabled(txtPhoneNumber.getText().length() > 0 && txtMessage.getText().length() > 0);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                sendButton.setEnabled(txtPhoneNumber.getText().length() > 0 && txtMessage.getText().length() > 0);
-            }
-        });
-
-        txtMessage.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                sendButton.setEnabled(txtPhoneNumber.getText().length() > 0 && txtMessage.getText().length() > 0);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                sendButton.setEnabled(txtPhoneNumber.getText().length() > 0 && txtMessage.getText().length() > 0);
-            }
-        });
-
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    /* Check `SEND_SMS` permission, if have it, read contacts, if not, request it. */
-                    if (ContextCompat.checkSelfPermission(NewMessageActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(NewMessageActivity.this,
-                                new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_REQUEST_CODE);
-                        Log.d("110", "No permission, and I'll request it.");
-                    } else {
-                        Log.d("110", "Have permission, and I'll send message.");
-                        send();
-                    }
-                } catch (Exception e) {
-                    Log.d("110", e.getMessage());
-                }
-            }
-        });
+        addButton.setOnClickListener(mOnClickListener);
+        txtPhoneNumber.addTextChangedListener(mTextWatcher);
+        txtMessage.addTextChangedListener(mTextWatcher);
+        sendButton.setOnClickListener(mOnClickListener);
 
     }
 
@@ -182,6 +127,7 @@ public class NewMessageActivity extends AppCompatActivity {
         Date date = new Date();
         String txtTimeForTest = sdf.format(date) + " i miss u.";
 
+        /* Hide the default title. */
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
@@ -195,7 +141,7 @@ public class NewMessageActivity extends AppCompatActivity {
         txtPhoneNumber.requestFocus();
         txtMessage.setText(txtTimeForTest);
         sendButton.setEnabled(false);
-        KeyboardControl.showKeyboardDelay(txtPhoneNumber, 300);
+        KeyboardControler.showKeyboardDelay(txtPhoneNumber, 300);
     }
 
     public void sendMessageByApp(String phoneNumber, String message) {
@@ -215,7 +161,6 @@ public class NewMessageActivity extends AppCompatActivity {
     public void send() {
         contactsPhone = txtPhoneNumber.getText().toString();
         message = txtMessage.getText().toString();
-        // sendMessageByApp(contactsPhone, message);
 
         if (message.length() <= 70) {
             Log.d("110", "Length <= 70");
@@ -245,4 +190,50 @@ public class NewMessageActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            sendButton.setEnabled(txtPhoneNumber.getText().length() > 0 && txtMessage.getText().length() > 0);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            sendButton.setEnabled(txtPhoneNumber.getText().length() > 0 && txtMessage.getText().length() > 0);
+        }
+    };
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.add_button:
+                    Intent intent1 = new Intent(NewMessageActivity.this, ContactsSelectActivity.class);
+                    startActivityForResult(intent1, CONTACTS_CODE);
+                    break;
+                case R.id.send_button:
+                    try {
+                        /* Check `SEND_SMS` permission, if have it, read contacts, if not, request it. */
+                        if (ContextCompat.checkSelfPermission(NewMessageActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(NewMessageActivity.this,
+                                    new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_REQUEST_CODE);
+                            Log.d("110", "No permission, and I'll request it.");
+                        } else {
+                            Log.d("110", "Have permission, and I'll send message.");
+                            send();
+                        }
+                    } catch (Exception e) {
+                        Log.d("110", e.getMessage());
+                    }
+                    break;
+
+            }
+        }
+    };
+
 }
