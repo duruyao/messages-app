@@ -33,7 +33,7 @@ public class MessagesDisplayer {
     private List<Messages> messagesList = new ArrayList<>();
     private Context context;
     private Activity activity;
-
+    private String goalAddress;
     private String address;
     private int person;
     private String body;
@@ -41,8 +41,9 @@ public class MessagesDisplayer {
     private int type;
     private int read;
 
-    public MessagesDisplayer(Context context) {
+    public MessagesDisplayer(Context context, String goalAddress) {
         this.context = context;
+        this.goalAddress = goalAddress;
         this.activity = getActivity(this.context);
 
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
@@ -54,7 +55,7 @@ public class MessagesDisplayer {
             readSMS();
         }
 
-        RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerView1);
+        RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.messages_recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         MessagesAdapter adapter = new MessagesAdapter(this.context, messagesList);
@@ -74,7 +75,9 @@ public class MessagesDisplayer {
                     date = cursor.getInt(cursor.getColumnIndex("date"));
                     type = cursor.getInt(cursor.getColumnIndex("type"));
                     read = cursor.getInt(cursor.getColumnIndex("read"));
-                    messagesList.add(new Messages(address, person, body, date, type, read));
+                    if (address.equals(goalAddress)) {
+                        messagesList.add(new Messages(address, person, body, date, type, read));
+                    }
                 }
             }
         } catch (Exception e) {

@@ -14,4 +14,5 @@
     <string name="send">发送</string>
     <string name="contacts">联系人</string>
     <string name="type_content">输入消息内容</string>
+    <string name="session">会话</string>
 </resources>

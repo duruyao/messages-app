@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import top.gpg2.messages.MainActivity;
 import top.gpg2.messages.R;
 
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.List;
 public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHolder> {
     private List<List<Messages>> sessionsList;
     private Context context;
+    private Activity activity;
 
     /**
      * An internal class to cache instance of controls.
@@ -57,6 +59,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     public SessionsAdapter(Context context, List<List<Messages>> sessionsList) {
         this.sessionsList = sessionsList;
         this.context = context;
+        this.activity = getActivity(this.context);
     }
 
     /**
@@ -77,11 +80,13 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
 
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent();
+                Intent intent1 = new Intent(context, MessagesReadActivity.class);
                 Log.d("110", "Create a Intent.");
                 int position = holder.getAdapterPosition();
                 Messages messages = sessionsList.get(position).get(0);
-
+                Toast.makeText(v.getContext(), "Select " + messages.getAddress(), Toast.LENGTH_SHORT).show();
+                intent1.putExtra("addressKey", messages.getAddress());
+                activity.startActivity(intent1);
 
             }
         });

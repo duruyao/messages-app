@@ -26,13 +26,19 @@ import java.util.List;
  * Create 19/03/30
  */
 public class SessionsDisplayer {
-
     final private int READ_SMS_REQUEST_CODE = 121;
     final String SMS_URI_ALL = "content://sms/";
     private List<Messages> allMessagesList = new ArrayList<>();
     private List<List<Messages>> sessionsList = new ArrayList<List<Messages>>();
     private Context context;
     private Activity activity;
+
+    private String address;
+    private int person;
+    private String body;
+    private int date;
+    private int type;
+    private int read;
 
     public SessionsDisplayer(Context context) {
         this.context = context;
@@ -55,42 +61,61 @@ public class SessionsDisplayer {
     }
 
     public void getSessions() {
+        Log.d("110", "Call function getSessions().");
         allMessagesList = getAllSMSList();
-        Iterator<Messages> mIterator = allMessagesList.iterator();
-        while (mIterator.hasNext()) {
-            List<Messages> mList = new ArrayList<>();
+        Log.d("110", "Have get all messages list.");
 
-            Messages messages1 = (Messages) mIterator.next();
+        for (int i = 0; i < allMessagesList.size(); i++) {
+            List<Messages> mList = new ArrayList<>();
+            Messages messages1 = allMessagesList.get(i);
             mList.add(messages1);
             String ADDRESS = messages1.getAddress();
-            allMessagesList.remove(mIterator.next());
+            for (int j = i + 1; j < allMessagesList.size(); j++) {
+                Messages messages2 = allMessagesList.get(j);
+                if (messages2.getAddress().equals(ADDRESS)) {
+                    mList.add(messages2);
+                    allMessagesList.remove(j);
+                    j--;
+                }
+            }
+            allMessagesList.remove(i);
+            i--;
+            sessionsList.add(mList);
+        }
+        /* Error: `Messages messages1 = (Messages) mIterator.next();` */
+        /* Iterator<Messages> mIterator = allMessagesList.iterator();
+        while (mIterator.hasNext()) {
+            List<Messages> mList = new ArrayList<>();
+            Messages messages1 = (Messages) mIterator.next();
+            mList.add(mIterator.next());
+            String ADDRESS = messages1.getAddress();
+            mIterator.remove();
             while (mIterator.hasNext()) {
                 Messages messages2 = (Messages) mIterator.next();
-                if (messages2.getAddress() == ADDRESS) {
+                if (messages2.getAddress().equals(ADDRESS)) {
                     mList.add(messages2);
-                    allMessagesList.remove(mIterator.next());
+                    mIterator.remove();
                 }
             }
             sessionsList.add(mList);
-        }
-
-
+        } */
     }
 
     public List<Messages> getAllSMSList() {
-        List<Messages> allMessagesList = new ArrayList<>();
-        Log.d("110", "Call function readSMS().");
+        List<Messages> messagesList = new ArrayList<>();
+        Log.d("110", "Call function getAllSMSList().");
         Cursor cursor = null;
         try {
             cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, null, null, "date desc");
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    String messagesAddress =
-                            cursor.getString(cursor.getColumnIndex("address"));
-                    String messagesBody =
-                            cursor.getString(cursor.getColumnIndex("body"));
-
-                    allMessagesList.add(new Messages(messagesAddress, messagesBody));
+                    address = cursor.getString(cursor.getColumnIndex("address"));
+                    person = cursor.getInt(cursor.getColumnIndex("person"));
+                    body = cursor.getString(cursor.getColumnIndex("body"));
+                    date = cursor.getInt(cursor.getColumnIndex("date"));
+                    type = cursor.getInt(cursor.getColumnIndex("type"));
+                    read = cursor.getInt(cursor.getColumnIndex("read"));
+                    messagesList.add(new Messages(address, person, body, date, type, read));
                 }
             }
         } catch (Exception e) {
@@ -100,7 +125,7 @@ public class SessionsDisplayer {
                 cursor.close();
             }
         }
-        return allMessagesList;
+        return messagesList;
     }
 
     private Activity getActivity(Context context) {
