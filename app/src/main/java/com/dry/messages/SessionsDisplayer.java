@@ -7,41 +7,34 @@ import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import top.gpg2.messages.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- * A class that could be called to display messages.
+ * A class that could be called to display sessions.
  *
  * @author DuRuyao
- * Create 19/03/28
+ * Create 19/03/30
  */
-public class MessagesDisplayer {
+public class SessionsDisplayer {
+
     final private int READ_SMS_REQUEST_CODE = 121;
     final String SMS_URI_ALL = "content://sms/";
-
-    private List<Messages> messagesList = new ArrayList<>();
+    private List<Messages> allMessagesList = new ArrayList<>();
+    private List<List<Messages>> sessionsList = new ArrayList<List<Messages>>();
     private Context context;
     private Activity activity;
 
-    private String address;
-    private int person;
-    private String body;
-    private int date;
-    private int type;
-    private int read;
-
-    public MessagesDisplayer(Context context) {
+    public SessionsDisplayer(Context context) {
         this.context = context;
         this.activity = getActivity(this.context);
 
@@ -51,30 +44,53 @@ public class MessagesDisplayer {
             Log.d("110", "No permission, and I'll request it.");
         } else {
             Log.d("110", "Have permission, and I'll read SMS.");
-            readSMS();
+            getSessions();
         }
 
         RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerView1);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        MessagesAdapter adapter = new MessagesAdapter(this.context, messagesList);
+        SessionsAdapter adapter = new SessionsAdapter(this.context, sessionsList);
         recyclerView.setAdapter(adapter);
     }
 
-    public void readSMS() {
+    public void getSessions() {
+        allMessagesList = getAllSMSList();
+        Iterator<Messages> mIterator = allMessagesList.iterator();
+        while (mIterator.hasNext()) {
+            List<Messages> mList = new ArrayList<>();
+
+            Messages messages1 = (Messages) mIterator.next();
+            mList.add(messages1);
+            String ADDRESS = messages1.getAddress();
+            allMessagesList.remove(mIterator.next());
+            while (mIterator.hasNext()) {
+                Messages messages2 = (Messages) mIterator.next();
+                if (messages2.getAddress() == ADDRESS) {
+                    mList.add(messages2);
+                    allMessagesList.remove(mIterator.next());
+                }
+            }
+            sessionsList.add(mList);
+        }
+
+
+    }
+
+    public List<Messages> getAllSMSList() {
+        List<Messages> allMessagesList = new ArrayList<>();
         Log.d("110", "Call function readSMS().");
         Cursor cursor = null;
         try {
             cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, null, null, "date desc");
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    address = cursor.getString(cursor.getColumnIndex("address"));
-                    person = cursor.getInt(cursor.getColumnIndex("person"));
-                    body = cursor.getString(cursor.getColumnIndex("body"));
-                    date = cursor.getInt(cursor.getColumnIndex("date"));
-                    type = cursor.getInt(cursor.getColumnIndex("type"));
-                    read = cursor.getInt(cursor.getColumnIndex("read"));
-                    messagesList.add(new Messages(address, person, body, date, type, read));
+                    String messagesAddress =
+                            cursor.getString(cursor.getColumnIndex("address"));
+                    String messagesBody =
+                            cursor.getString(cursor.getColumnIndex("body"));
+
+                    allMessagesList.add(new Messages(messagesAddress, messagesBody));
                 }
             }
         } catch (Exception e) {
@@ -84,6 +100,7 @@ public class MessagesDisplayer {
                 cursor.close();
             }
         }
+        return allMessagesList;
     }
 
     private Activity getActivity(Context context) {
@@ -97,5 +114,4 @@ public class MessagesDisplayer {
             return null;
         }
     }
-
 }
