@@ -59,7 +59,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     public SessionsAdapter(Context context, List<List<Messages>> sessionsList) {
         this.sessionsList = sessionsList;
         this.context = context;
-        this.activity = getActivity(this.context);
+        this.activity = ActivityController.getActivity(this.context);
     }
 
     /**
@@ -84,7 +84,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
                 Log.d("110", "Create a Intent.");
                 int position = holder.getAdapterPosition();
                 Messages messages = sessionsList.get(position).get(0);
-                Toast.makeText(v.getContext(), "Select " + messages.getAddress(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(v.getContext(), "Select " + messages.getAddress(), Toast.LENGTH_SHORT).show();
                 intent1.putExtra("addressKey", messages.getAddress());
                 activity.startActivity(intent1);
 
@@ -97,7 +97,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Messages messages = sessionsList.get(position).get(0);
-        holder.messagesAddress.setText(messages.getAddress());
+        holder.messagesAddress.setText(messages.getContactName(this.context));
         holder.messagesBody.setText(messages.getBody());
     }
 
@@ -111,21 +111,21 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
         return sessionsList.size();
     }
 
-    /**
-     * Get current activity.
-     *
-     * @param context Current context.
-     * @return An activity.
-     */
-    private Activity getActivity(Context context) {
-        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-
-        if (context instanceof Activity) {
-            return (Activity) context;
-        } else {
-            return null;
-        }
-    }
+//    /**
+//     * Get current activity.
+//     *
+//     * @param context Current context.
+//     * @return An activity.
+//     */
+//    private Activity getActivity(Context context) {
+//        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
+//            context = ((ContextWrapper) context).getBaseContext();
+//        }
+//
+//        if (context instanceof Activity) {
+//            return (Activity) context;
+//        } else {
+//            return null;
+//        }
+//    }
 }

@@ -28,6 +28,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     private List<Contacts> contactsList;
     private Context context;
+    private Activity activity;
 
     /**
      * An internal class to cache instance of controls.
@@ -59,6 +60,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public ContactsAdapter(Context context, List<Contacts> contactsList) {
         this.contactsList = contactsList;
         this.context = context;
+        this.activity = ActivityController.getActivity(this.context);
     }
 
     /**
@@ -79,18 +81,18 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             @Override
             public void onClick(View v) {
-                Intent intent_1 = new Intent();
+                Intent intent1 = new Intent();
                 Log.d("110", "Create a Intent.");
                 int position = holder.getAdapterPosition();
                 Contacts contacts = contactsList.get(position);
-                intent_1.putExtra("phoneKey", contacts.getPhoneNumber());
-                intent_1.putExtra("nameKey", contacts.getName());
+                intent1.putExtra("phoneKey", contacts.getPhoneNumber());
+                intent1.putExtra("nameKey", contacts.getName());
                 Toast.makeText(v.getContext(),
                         "Select " + contacts.getName() + " " + contacts.getPhoneNumber(),
                         Toast.LENGTH_SHORT).show();
-                Activity activity = getActivity(context);
+//                Activity activity = getActivity(context);
                 Log.d("110", "Get current Activity");
-                activity.setResult(RESULT_OK, intent_1);
+                activity.setResult(RESULT_OK, intent1);
                 Log.d("110", "Return a Intent.");
                 activity.finish();
 
@@ -116,24 +118,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     @Override
     public int getItemCount() {
         return contactsList.size();
-    }
-
-    /**
-     * Get current activity.
-     *
-     * @param context Current context.
-     * @return An activity.
-     */
-    private Activity getActivity(Context context) {
-        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-
-        if (context instanceof Activity) {
-            return (Activity) context;
-        } else {
-            return null;
-        }
     }
 
 }

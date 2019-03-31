@@ -81,8 +81,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Messages messages = messagesList.get(position);
-                String toastText = "Address: "+messages.getAddress() + "\nPerson:  " + messages.getPerson() + "\nDate: " + messages.getDate() + "\nType: "
-                        + messages.getType() + "\nRead: "+messages.getRead() + "\nBody: " + messages.getBody();
+                String toastText = "Address: " + messages.getAddress() + "\nPerson:  " + messages.getPerson() + "\nDate: " + messages.getDate() + "\nType: "
+                        + messages.getType() + "\nRead: " + messages.getRead() + "\nBody: " + messages.getBody();
                 Toast.makeText(v.getContext(), toastText, Toast.LENGTH_SHORT).show();
 
             }
@@ -95,7 +95,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Messages messages = messagesList.get(position);
-        holder.messagesAddress.setText(messages.getAddress());
+        holder.messagesAddress.setText(messages.getContactName(this.context));
         holder.messagesBody.setText(messages.getBody());
     }
 
@@ -107,24 +107,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @Override
     public int getItemCount() {
         return messagesList.size();
-    }
-
-    /**
-     * Get current activity.
-     *
-     * @param context Current context.
-     * @return An activity.
-     */
-    private Activity getActivity(Context context) {
-        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-
-        if (context instanceof Activity) {
-            return (Activity) context;
-        } else {
-            return null;
-        }
     }
 
 }

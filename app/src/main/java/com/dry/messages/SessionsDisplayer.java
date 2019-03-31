@@ -42,7 +42,7 @@ public class SessionsDisplayer {
 
     public SessionsDisplayer(Context context) {
         this.context = context;
-        this.activity = getActivity(this.context);
+        this.activity = ActivityController.getActivity(this.context);
 
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity,
@@ -115,6 +115,7 @@ public class SessionsDisplayer {
                     date = cursor.getInt(cursor.getColumnIndex("date"));
                     type = cursor.getInt(cursor.getColumnIndex("type"));
                     read = cursor.getInt(cursor.getColumnIndex("read"));
+
                     messagesList.add(new Messages(address, person, body, date, type, read));
                 }
             }
@@ -128,15 +129,15 @@ public class SessionsDisplayer {
         return messagesList;
     }
 
-    private Activity getActivity(Context context) {
-        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-
-        if (context instanceof Activity) {
-            return (Activity) context;
-        } else {
-            return null;
-        }
-    }
+//    private Activity getActivity(Context context) {
+//        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
+//            context = ((ContextWrapper) context).getBaseContext();
+//        }
+//
+//        if (context instanceof Activity) {
+//            return (Activity) context;
+//        } else {
+//            return null;
+//        }
+//    }
 }

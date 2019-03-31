@@ -1,5 +1,16 @@
 package com.dry.messages;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.provider.ContactsContract;
+import android.util.Log;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 /**
  * A class of messages.
  *
@@ -14,6 +25,10 @@ public class Messages {
     private final int SENT = 2;
     private final boolean BE_READ = true;
     private final boolean BE_NOT_READ = false;
+
+    private String contactName;
+    private Context context;
+    private Activity activity;
 
     private String address;
     private int person;
@@ -60,6 +75,40 @@ public class Messages {
 
     public int getRead() {
         return this.read;
+    }
+
+    /**
+     * @param context Current context.
+     * @return The contact's name, if the number belong with one contact, else return the number.
+     */
+    public String getContactName(Context context) {
+        this.context = context;
+        this.activity = ActivityController.getActivity(this.context);
+
+        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.activity,
+                    new String[]{Manifest.permission.READ_CONTACTS}, 1);
+            Log.d("110", "No permission to get name of contacts.");
+            this.contactName = getAddress();
+        } else {
+            Log.d("110", "Have permission, and I'll read name of contacts.");
+            Cursor cursor = activity.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+            this.contactName = getAddress();
+            if (cursor != null) {
+                Log.d("110", "Find number: " + this.address);
+                while (cursor.moveToNext()) {
+                    /* Delete all white spaces from phone number(e.g. `133 5719 2542` -> `13357192542`). */
+                    String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).replaceAll("\\s", "");
+                    if (number.equals(getAddress())) {
+                        Log.d("110", "Successful, the number: " + number);
+                        this.contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    } else {
+                        Log.d("110", "Failed, the number: " + number);
+                    }
+                }
+            }
+        }
+        return this.contactName;
     }
 
 }

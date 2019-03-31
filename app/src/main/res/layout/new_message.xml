@@ -32,8 +32,8 @@
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#001E90FF"
             android:text="@string/add"
+            android:textColor="#708090"
             android:textAllCaps="false" />
 
     </TableRow>
@@ -53,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send"
+            android:textColor="#708090"
             android:textAllCaps="false" />
     </TableRow>
 

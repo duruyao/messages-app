@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -141,7 +140,7 @@ public class NewMessageActivity extends AppCompatActivity {
         txtPhoneNumber.requestFocus();
         txtMessage.setText(txtTimeForTest);
         sendButton.setEnabled(false);
-        KeyboardControler.showKeyboardDelay(txtPhoneNumber, 300);
+        KeyboardController.showKeyboardDelay(txtPhoneNumber, 300);
     }
 
     public void sendMessageByApp(String phoneNumber, String message) {

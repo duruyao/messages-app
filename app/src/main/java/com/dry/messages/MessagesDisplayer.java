@@ -44,7 +44,7 @@ public class MessagesDisplayer {
     public MessagesDisplayer(Context context, String goalAddress) {
         this.context = context;
         this.goalAddress = goalAddress;
-        this.activity = getActivity(this.context);
+        this.activity = ActivityController.getActivity(this.context);
 
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity,
@@ -86,18 +86,6 @@ public class MessagesDisplayer {
             if (cursor != null) {
                 cursor.close();
             }
-        }
-    }
-
-    private Activity getActivity(Context context) {
-        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-
-        if (context instanceof Activity) {
-            return (Activity) context;
-        } else {
-            return null;
         }
     }
 

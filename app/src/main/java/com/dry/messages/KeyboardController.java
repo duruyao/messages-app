@@ -12,7 +12,7 @@ import java.util.TimerTask;
  * @author DuRuyao
  * Create 19/03/10
  */
-public class KeyboardControler {
+public class KeyboardController {
 
     public static void showKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext()
