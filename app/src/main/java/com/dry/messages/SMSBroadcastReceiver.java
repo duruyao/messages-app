@@ -46,7 +46,7 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
                         Toast.makeText(context, "Messages arrived", Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        /* 短信未送达 */
+
                         Toast.makeText(context, "Cannot arrived, unknown reason", Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_RADIO_OFF:

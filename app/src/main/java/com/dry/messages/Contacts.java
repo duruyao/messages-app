@@ -9,9 +9,9 @@ package com.dry.messages;
 public class Contacts {
     private String name;
     private String phoneNumber;
-    // private int imageID;
-    // private boolean isFavorite = false;
-    // private boolean isHateful = false;
+     private int imageID;
+     private boolean isFavorite = false;
+     private boolean isHateful = false;
 
     public Contacts(String name, String phoneNumber) {
         this.name = name;

@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A class that could be called to display sessions.
+ * A class that could be called by Activity to display sessions.
  *
  * @author DuRuyao
  * Create 19/03/30
@@ -30,6 +30,7 @@ public class SessionsDisplayer {
     final String SMS_URI_ALL = "content://sms/";
     private List<Messages> allMessagesList = new ArrayList<>();
     private List<List<Messages>> sessionsList = new ArrayList<List<Messages>>();
+
     private Context context;
     private Activity activity;
 
@@ -54,8 +55,10 @@ public class SessionsDisplayer {
         }
 
         RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerView1);
+        /* Set layout manager for an instance of RecyclerView. */
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
+        /* Instance an Adapter who contains of list of sessions, and import it to the instance of RecyclerView. */
         SessionsAdapter adapter = new SessionsAdapter(this.context, sessionsList);
         recyclerView.setAdapter(adapter);
     }
@@ -82,7 +85,7 @@ public class SessionsDisplayer {
             i--;
             sessionsList.add(mList);
         }
-        /* Error: `Messages messages1 = (Messages) mIterator.next();` */
+        /* Meeting an Error: `Messages messages1 = (Messages) mIterator.next();` */
         /* Iterator<Messages> mIterator = allMessagesList.iterator();
         while (mIterator.hasNext()) {
             List<Messages> mList = new ArrayList<>();
@@ -129,15 +132,4 @@ public class SessionsDisplayer {
         return messagesList;
     }
 
-//    private Activity getActivity(Context context) {
-//        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
-//            context = ((ContextWrapper) context).getBaseContext();
-//        }
-//
-//        if (context instanceof Activity) {
-//            return (Activity) context;
-//        } else {
-//            return null;
-//        }
-//    }
 }

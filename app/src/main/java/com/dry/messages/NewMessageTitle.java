@@ -21,9 +21,6 @@ public class NewMessageTitle extends LinearLayout {
     private Button leftButton;
     private Button rightButton;
     private TextView centerTitle;
-    // final private String CENTER_TITLE_TEXT = "New Messages";
-    // final private String LEFT_BUTTON_TEXT = "";
-    // final private String RIGHT_BUTTON_TEXT = "Cancel";
 
     public NewMessageTitle(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,7 +31,6 @@ public class NewMessageTitle extends LinearLayout {
         centerTitle = (TextView) findViewById(R.id.center_title);
 
         centerTitle.setText(R.string.new_message);
-        // leftButton.setText(LEFT_BUTTON_TEXT);
         rightButton.setText(R.string.cancel);
 
         rightButton.setOnClickListener(new OnClickListener() {

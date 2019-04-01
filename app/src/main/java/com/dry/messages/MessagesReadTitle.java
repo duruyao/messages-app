@@ -29,7 +29,6 @@ public class MessagesReadTitle extends LinearLayout {
         centerTitle = (TextView) findViewById(R.id.center_title);
 
         centerTitle.setText(R.string.session);
-        // leftButton.setText(LEFT_BUTTON_TEXT);
         rightButton.setText(R.string.cancel);
 
         rightButton.setOnClickListener(new OnClickListener() {

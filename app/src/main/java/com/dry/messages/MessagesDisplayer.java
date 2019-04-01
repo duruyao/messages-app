@@ -56,8 +56,10 @@ public class MessagesDisplayer {
         }
 
         RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.messages_recyclerView);
+        /* Set layout manager for an instance of RecyclerView. */
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
+        /* Instance an Adapter who contains of list of messages, and import it to the instance of RecyclerView. */
         MessagesAdapter adapter = new MessagesAdapter(this.context, messagesList);
         recyclerView.setAdapter(adapter);
     }

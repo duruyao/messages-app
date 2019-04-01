@@ -22,9 +22,6 @@ public class ContactsSelectTitle extends LinearLayout {
     private Button leftButton;
     private Button rightButton;
     private TextView centerTitle;
-    // final private String CENTER_TITLE_TEXT = "";
-    // final private String LEFT_BUTTON_TEXT = "";
-    // final private String RIGHT_BUTTON_TEXT = "";
 
     public ContactsSelectTitle(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -35,7 +32,6 @@ public class ContactsSelectTitle extends LinearLayout {
         centerTitle = (TextView) findViewById(R.id.center_title);
 
         centerTitle.setText(R.string.contacts);
-        // leftButton.setText(LEFT_BUTTON_TEXT);
         rightButton.setText(R.string.cancel);
 
         rightButton.setOnClickListener(new OnClickListener() {

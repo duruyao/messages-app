@@ -92,19 +92,30 @@ public class Messages {
             this.contactName = getAddress();
         } else {
             Log.d("110", "Have permission, and I'll read name of contacts.");
-            Cursor cursor = activity.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-            this.contactName = getAddress();
-            if (cursor != null) {
-                Log.d("110", "Find number: " + this.address);
-                while (cursor.moveToNext()) {
-                    /* Delete all white spaces from phone number(e.g. `133 5719 2542` -> `13357192542`). */
-                    String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).replaceAll("\\s", "");
-                    if (number.equals(getAddress())) {
-                        Log.d("110", "Successful, the number: " + number);
-                        this.contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                    } else {
-                        Log.d("110", "Failed, the number: " + number);
+            Cursor cursor = null;
+            try {
+                cursor = activity.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null, null, null, null);
+                this.contactName = getAddress();
+                if (cursor != null) {
+                    Log.d("110", "Find number: " + this.address);
+                    while (cursor.moveToNext()) {
+                        /* Delete all white spaces from phone number(e.g. `133 5719 2542` -> `13357192542`). */
+                        String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).
+                                replaceAll("\\s", "");
+                        if (number.equals(getAddress())) {
+                            Log.d("110", "Successful, the number: " + number);
+                            this.contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                        } else {
+                            Log.d("110", "Failed, the number: " + number);
+                        }
                     }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
                 }
             }
         }

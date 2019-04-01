@@ -58,7 +58,7 @@ public class ContactsSelectActivity extends AppCompatActivity {
         Log.d("Life", "[ContactsSelectActivity]: onResume");
         super.onResume();
 
-        // Check `READ_CONTACTS` permission, if have it, read contacts, if not, request it.
+        /* Check `READ_CONTACTS` permission, if have it, read contacts, if not, request it. */
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_REQUEST_CODE);
@@ -69,8 +69,10 @@ public class ContactsSelectActivity extends AppCompatActivity {
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.contacts_recyclerView);
+        /* Set layout manager for an instance of RecyclerView. */
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        /* Instance an Adapter who contains of list of contacts, and import it to the instance of RecyclerView. */
         ContactsAdapter adapter = new ContactsAdapter(ContactsSelectActivity.this, contactsList);
         recyclerView.setAdapter(adapter);
     }
@@ -120,6 +122,9 @@ public class ContactsSelectActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The method will be called after requesting permission.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {

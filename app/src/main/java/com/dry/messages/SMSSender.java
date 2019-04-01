@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class about sending of SMS.
+ * A class as sender of SMS, and it contains of some methods about sending messages.
  *
  * @author DuRuyao
  * Create 19/03/20
@@ -40,7 +40,6 @@ public class SMSSender {
         }
         return smsSender;
     }
-
 
     public void SendMessage(String strDestAddress, String strMessage) {
         /* Make instance of SmsManager. */

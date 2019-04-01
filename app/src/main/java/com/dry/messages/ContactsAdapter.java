@@ -102,7 +102,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         return holder;
     }
 
-
+    /**
+     * The method will be called when item of RecyclerView appear on the screen, and set somethings for item.
+     *
+     * @param holder   The holder of item of RecyclerView.
+     * @param position The position of item in RecyclerView.
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Contacts contacts = contactsList.get(position);
