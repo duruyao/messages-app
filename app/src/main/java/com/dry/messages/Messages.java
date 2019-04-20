@@ -104,10 +104,10 @@ public class Messages {
                         String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).
                                 replaceAll("\\s", "");
                         if (number.equals(getAddress())) {
-                            Log.d("110", "Successful, the number: " + number);
+                            Log.d("110", "Success to find, the number: " + number);
                             this.contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                         } else {
-                            Log.d("110", "Failed, the number: " + number);
+                            Log.d("110", "Failed to find, the number: " + number);
                         }
                     }
                 }

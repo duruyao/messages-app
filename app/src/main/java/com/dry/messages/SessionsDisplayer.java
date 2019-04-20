@@ -73,6 +73,7 @@ public class SessionsDisplayer {
             Messages messages1 = allMessagesList.get(i);
             mList.add(messages1);
             String ADDRESS = messages1.getAddress();
+
             for (int j = i + 1; j < allMessagesList.size(); j++) {
                 Messages messages2 = allMessagesList.get(j);
                 if (messages2.getAddress().equals(ADDRESS)) {
