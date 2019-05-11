@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,6 +43,9 @@ public class SessionsDisplayer {
     private int type;
     private int read;
 
+    private int lastPosition = 0;
+    private int lastOffset = 0;
+
     public SessionsDisplayer(Context context) {
         this.context = context;
         this.activity = ActivityController.getActivity(this.context);
@@ -56,11 +61,31 @@ public class SessionsDisplayer {
 
         RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerView1);
         /* Set layout manager for an instance of RecyclerView. */
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         /* Instance an Adapter who contains of list of sessions, and import it to the instance of RecyclerView. */
         SessionsAdapter adapter = new SessionsAdapter(this.context, sessionsList);
         recyclerView.setAdapter(adapter);
+        /* Go back the last position of RecyclerView. */
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                View topView = layoutManager.getChildAt(0);
+                /* Get position when topView != null */
+                if (topView != null) {
+                    lastOffset = topView.getTop();
+                    lastPosition = layoutManager.getPosition(topView);
+                    Log.v("110", "last off set: " + lastOffset);
+                    Log.v("110", "last position: " + lastPosition);
+                }
+            }
+        });
+        try {
+            ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(lastPosition, lastOffset);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 
     public void getSessions() {

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -28,6 +29,9 @@ import java.util.List;
 public class ContactsSelectActivity extends AppCompatActivity {
     final private int READ_CONTACTS_REQUEST_CODE = 1;
     private List<Contacts> contactsList = new ArrayList<>();
+
+    private int lastPosition = 0;
+    private int lastOffset = 0;
 
     @Override
     protected void onDestroy() {
@@ -70,11 +74,31 @@ public class ContactsSelectActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.contacts_recyclerView);
         /* Set layout manager for an instance of RecyclerView. */
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         /* Instance an Adapter who contains of list of contacts, and import it to the instance of RecyclerView. */
         ContactsAdapter adapter = new ContactsAdapter(ContactsSelectActivity.this, contactsList);
         recyclerView.setAdapter(adapter);
+        /* Go back the last position of RecyclerView. */
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                View topView = layoutManager.getChildAt(0);
+                /* Get position when topView != null */
+                if (topView != null) {
+                    lastOffset = topView.getTop();
+                    lastPosition = layoutManager.getPosition(topView);
+                    Log.v("110", "last off set: " + lastOffset);
+                    Log.v("110", "last position: " + lastPosition);
+                }
+            }
+        });
+        try {
+            ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(lastPosition, lastOffset);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 
     @Override

@@ -21,8 +21,8 @@ import androidx.core.content.ContextCompat;
  */
 public class Messages {
 
-    private final int RECEIVED = 1;
-    private final int SENT = 2;
+    private final int TYPE_RECEIVED = 1;
+    private final int TYPE_SENT = 2;
     private final boolean BE_READ = true;
     private final boolean BE_NOT_READ = false;
 

@@ -2,18 +2,15 @@ package com.dry.messages;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.media.MediaCas;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import top.gpg2.messages.MainActivity;
+import de.hdodenhof.circleimageview.CircleImageView;
 import top.gpg2.messages.R;
 
 import java.util.List;
@@ -34,8 +31,10 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
         View sessionsView;
-        TextView messagesAddress;
-        TextView messagesBody;
+        CircleImageView contactsImage;
+        TextView smsAddress;
+        TextView smsDate;
+        TextView smsBody;
 
         /**
          * Constructor of ViewHolder class.
@@ -45,8 +44,10 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
         private ViewHolder(View view) {
             super(view);
             sessionsView = view;
-            messagesAddress = (TextView) view.findViewById(R.id.messages_address);
-            messagesBody = (TextView) view.findViewById(R.id.messages_body);
+            contactsImage = (CircleImageView) view.findViewById(R.id.contacts_image);
+            smsAddress = (TextView) view.findViewById(R.id.sms_address);
+            smsDate = (TextView) view.findViewById(R.id.sms_date);
+            smsBody = (TextView) view.findViewById(R.id.sms_body);
         }
     }
 
@@ -71,7 +72,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         /* Load the item of RecyclerLayout. */
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.messages_item,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sessions_item,
                 parent, false);
         /* Create instance of ViewHolder by passing the view parameter. */
         final ViewHolder holder = new ViewHolder(view);
@@ -103,8 +104,8 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Messages messages = sessionsList.get(position).get(0);
-        holder.messagesAddress.setText(messages.getContactName(this.context));
-        holder.messagesBody.setText(messages.getBody());
+        holder.smsAddress.setText(messages.getContactName(this.context));
+        holder.smsBody.setText(messages.getBody());
     }
 
     /**

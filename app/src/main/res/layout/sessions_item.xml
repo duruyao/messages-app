@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="80dp"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="14dp"
-        app:cardElevation="3dp"
+        app:cardElevation="4.8dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true">
 
@@ -29,24 +29,38 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnCount="1"
-                android:rowCount="2">
+                android:columnCount="2"
+                android:rowCount="3">
 
                 <TextView
-                    android:id="@+id/contacts_name"
+                    android:id="@+id/sms_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_columnSpan="1"
                     android:layout_gravity="center_vertical"
-                    android:text="Name"
-                    android:textColor="@color/Black"
+                    android:text="Address"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/Black"/>
 
                 <TextView
-                    android:id="@+id/contacts_phone_num"
+                    android:id="@+id/sms_date"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnSpan="1"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:text="Date" />
+
+                <TextView
+                    android:id="@+id/sms_body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Phone Num" />
+                    android:layout_rowSpan="2"
+                    android:layout_columnSpan="2"
+                    android:layout_gravity="fill"
+                    android:maxLines="2"
+                    android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
 
             </GridLayout>
         </LinearLayout>

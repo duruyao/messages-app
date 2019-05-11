@@ -2,7 +2,6 @@ package com.dry.messages;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;

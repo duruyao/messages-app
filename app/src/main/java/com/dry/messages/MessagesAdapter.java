@@ -1,22 +1,17 @@
 package com.dry.messages;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import top.gpg2.messages.R;
 
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A adapter class that connects RecyclerView and List of messages.
@@ -28,14 +23,19 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
     private List<Messages> messagesList;
     private Context context;
+    private final int TYPE_RECEIVED = 1;
+    private final int TYPE_SENT = 2;
 
     /**
      * An internal class to cache instance of controls.
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
         View messagesView;
-        TextView messagesAddress;
-        TextView messagesBody;
+        TextView smsDate;
+        TextView smsBodyLeft;
+        TextView smsBodyRight;
+        CardView layoutLeft;
+        CardView layoutRight;
 
         /**
          * Constructor of ViewHolder class.
@@ -45,8 +45,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         private ViewHolder(View view) {
             super(view);
             messagesView = view;
-            messagesAddress = (TextView) view.findViewById(R.id.messages_address);
-            messagesBody = (TextView) view.findViewById(R.id.messages_body);
+            smsDate = (TextView) view.findViewById(R.id.sms_date);
+            smsBodyLeft = (TextView) view.findViewById(R.id.sms_body_left);
+            smsBodyRight = (TextView) view.findViewById(R.id.sms_body_right);
+            layoutLeft = (CardView) view.findViewById(R.id.layout_left);
+            layoutRight = (CardView) view.findViewById(R.id.layout_right);
         }
     }
 
@@ -100,8 +103,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Messages messages = messagesList.get(position);
-        holder.messagesAddress.setText(messages.getContactName(this.context));
-        holder.messagesBody.setText(messages.getBody());
+        holder.smsDate.setText(String.valueOf(messages.getDate()));
+        if (messages.getType() == TYPE_RECEIVED) {
+            holder.smsBodyLeft.setText(messages.getBody());
+            holder.layoutLeft.setVisibility(View.VISIBLE);
+            holder.layoutRight.setVisibility(View.GONE);
+        } else if (messages.getType() == TYPE_SENT) {
+            holder.smsBodyRight.setText(messages.getBody());
+            holder.layoutRight.setVisibility(View.VISIBLE);
+            holder.layoutLeft.setVisibility(View.GONE);
+        }
+
     }
 
     /**
