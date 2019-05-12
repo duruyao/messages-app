@@ -24,6 +24,9 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(context, "Success to send", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Messages arrived", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent("MESSAGES_ARRIVED");
+                        ActivityHelper.getActivity(context).sendBroadcast(intent1);
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         Toast.makeText(context, "Failed to send, unknown reason", Toast.LENGTH_SHORT).show();
@@ -43,7 +46,9 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
             try {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(context, "Messages arrived", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "Messages arrived", Toast.LENGTH_SHORT).show();
+//                        Intent intent1 = new Intent("MESSAGES_ARRIVED");
+//                        ActivityHelper.getActivity(context).sendBroadcast(intent1);
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
 

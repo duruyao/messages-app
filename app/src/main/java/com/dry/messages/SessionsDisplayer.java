@@ -3,7 +3,6 @@ package com.dry.messages;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,9 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import top.gpg2.messages.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -48,7 +45,7 @@ public class SessionsDisplayer {
 
     public SessionsDisplayer(Context context) {
         this.context = context;
-        this.activity = ActivityController.getActivity(this.context);
+        this.activity = ActivityHelper.getActivity(this.context);
 
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity,

@@ -41,7 +41,7 @@ public class SMSSender {
         return smsSender;
     }
 
-    public void SendMessage(String strDestAddress, String strMessage) {
+    public void SendMessage(String strAddress, String strMessage) {
         /* Make instance of SmsManager. */
         SmsManager smsManager = SmsManager.getDefault();
 
@@ -59,7 +59,7 @@ public class SMSSender {
             List<String> divideContents = smsManager.divideMessage(strMessage);
             for (String text : divideContents) {
                 /* Send SMS. */
-                smsManager.sendTextMessage(strDestAddress, null, text, sendPI, deliverPI);
+                smsManager.sendTextMessage(strAddress, null, text, sendPI, deliverPI);
             }
 
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class SMSSender {
         }
     }
 
-    public void SendMessage2(String strDestAddress, String strMessage) {
+    public void SendMessage2(String strAddress, String strMessage) {
         ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
         ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
 
@@ -89,8 +89,41 @@ public class SMSSender {
                 deliveredPendingIntents.add(i, deliverPI);
             }
             /* Send SMS. */
-            smsManager.sendMultipartTextMessage(strDestAddress, null, messageArray,
+            smsManager.sendMultipartTextMessage(strAddress, null, messageArray,
                     sentPendingIntents, deliveredPendingIntents);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void SendMessage2(List<String> strAddressList, String strMessage) {
+        ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
+        ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
+
+        SmsManager smsManager = SmsManager.getDefault();
+        /* The following line is suitable of API 22(Android 5.1.x) or higher. */
+        // SmsManager smsManager1 = SmsManager.getSmsManagerForSubscriptionId(subId);
+        try {
+            /* Make instance of Intent that is imported self-defined Action. */
+            Intent itSend = new Intent(SMS_SEND_ACTION);
+            Intent itDeliver = new Intent(SMS_DELIVERED_ACTION);
+
+            /* Make instance of PendingIntent to start two broadcasts while sending message. */
+            PendingIntent sendPI = PendingIntent.getBroadcast(context, 0, itSend, 0);
+            PendingIntent deliverPI = PendingIntent.getBroadcast(context, 0, itDeliver, 0);
+            ArrayList<String> messageArray = smsManager.divideMessage(strMessage);
+
+            for (int i = 0; i < messageArray.size(); i++) {
+                sentPendingIntents.add(i, sendPI);
+                deliveredPendingIntents.add(i, deliverPI);
+            }
+            /* Send SMS. */
+            for (int i = 0; i < strAddressList.size(); i++) {
+                smsManager.sendMultipartTextMessage(strAddressList.get(i), null, messageArray,
+                        sentPendingIntents, deliveredPendingIntents);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

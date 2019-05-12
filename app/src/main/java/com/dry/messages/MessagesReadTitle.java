@@ -23,9 +23,6 @@ public class MessagesReadTitle extends LinearLayout {
 
         leftButton = (ImageButton) findViewById(R.id.left_button);
         rightButton = (ImageButton) findViewById(R.id.right_button);
-//        centerTitle = (TextView) findViewById(R.id.center_title);
-
-//        centerTitle.setText(R.string.session);
 
         leftButton.setOnClickListener(new OnClickListener() {
             @Override

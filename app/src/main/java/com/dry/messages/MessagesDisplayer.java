@@ -3,14 +3,10 @@ package com.dry.messages;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,7 +40,7 @@ public class MessagesDisplayer {
     public MessagesDisplayer(Context context, String goalAddress) {
         this.context = context;
         this.goalAddress = goalAddress;
-        this.activity = ActivityController.getActivity(this.context);
+        this.activity = ActivityHelper.getActivity(this.context);
 
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity,
@@ -62,13 +58,14 @@ public class MessagesDisplayer {
         /* Instance an Adapter who contains of list of messages, and import it to the instance of RecyclerView. */
         MessagesAdapter adapter = new MessagesAdapter(this.context, messagesList);
         recyclerView.setAdapter(adapter);
+        recyclerView.scrollToPosition(adapter.getItemCount()-1);
     }
 
     public void readSMS() {
         Log.d("110", "Call function readSMS().");
         Cursor cursor = null;
         try {
-            cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, null, null, "date desc");
+            cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, null, null, "date asc");
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     address = cursor.getString(cursor.getColumnIndex("address"));

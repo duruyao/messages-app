@@ -59,7 +59,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public ContactsAdapter(Context context, List<Contacts> contactsList) {
         this.contactsList = contactsList;
         this.context = context;
-        this.activity = ActivityController.getActivity(this.context);
+        this.activity = ActivityHelper.getActivity(this.context);
     }
 
     /**
@@ -84,8 +84,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 Log.d("110", "Create a Intent.");
                 int position = holder.getAdapterPosition();
                 Contacts contacts = contactsList.get(position);
-                intent1.putExtra("phoneKey", contacts.getPhoneNumber());
-                intent1.putExtra("nameKey", contacts.getName());
+                intent1.putExtra("PHONE", contacts.getPhoneNumber());
+                intent1.putExtra("NAME", contacts.getName());
                 Toast.makeText(v.getContext(),
                         "Select " + contacts.getName() + " " + contacts.getPhoneNumber(),
                         Toast.LENGTH_SHORT).show();

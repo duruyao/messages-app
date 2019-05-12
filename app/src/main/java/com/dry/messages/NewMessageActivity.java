@@ -4,7 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -31,7 +34,6 @@ import top.gpg2.messages.R;
  * Create 19/03/05
  */
 public class NewMessageActivity extends AppCompatActivity {
-
     private EditText txtPhoneNumber;
     private EditText txtMessage;
     private ImageButton addContactsButton;
@@ -45,48 +47,37 @@ public class NewMessageActivity extends AppCompatActivity {
     final private int SEND_SMS_REQUEST_CODE = 2;
     private boolean MESSAGE_IS_SENT = false;
 
+    private IntentFilter intentFilter;
+    private SimpleSMSReceiver smsReceiver;
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data /*@Nullable Intent data*/) {
-        Log.d("110", "I'm function onActivityResult.");
-        switch (requestCode) {
-            case CONTACTS_CODE:
-                if (resultCode == RESULT_OK) {
-                    contactsPhone = data.getStringExtra("phoneKey");
-                    contactsName = data.getStringExtra("nameKey");
-                    String text = contactsPhone;
-                    Log.d("110", "Get: " + text);
-                    txtPhoneNumber.setText(text);
-                }
-                break;
-            default:
+    protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Life", "[NewMessageActivity]: onCreate()");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.new_messages);
+
+        /* Make time as content of message for test. */
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        sdf.applyPattern("[yyyy/MM/dd HH:mm:ss]");
+        Date date = new Date();
+        String txtTimeForTest = sdf.format(date) + " hello";
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.WhiteSmoke));
         }
-    }
 
-    @Override
-    protected void onDestroy() {
-        Log.d("Life", "[NewMessageActivity]: onDestroy()");
-        super.onDestroy();
-    }
+        txtPhoneNumber = (EditText) findViewById(R.id.txt_phone_number);
+        txtMessage = (EditText) findViewById(R.id.txt_message);
+        addContactsButton = (ImageButton) findViewById(R.id.add_contacts_button);
+        sendButton = (ImageButton) findViewById(R.id.send_button);
+        intentFilter = new IntentFilter();
+        smsReceiver = new SimpleSMSReceiver();
 
-    @Override
-    protected void onRestart() {
-        Log.d("Life", "[NewMessageActivity]: onRestart()");
-        super.onRestart();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d("Life", "[NewMessageActivity]: onStop()");
-        super.onStop();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d("Life", "[NewMessageActivity]: onPause()");
-        if (MESSAGE_IS_SENT) {
-            SMSSender.getInstance(this).unregisterReceiver();
-        }
-        super.onPause();
+        txtPhoneNumber.requestFocus();
+        txtMessage.setText(txtTimeForTest);
+        sendButton.setEnabled(false);
+        KeyboardController.showKeyboardDelay(txtPhoneNumber, 300);
     }
 
     @Override
@@ -107,46 +98,37 @@ public class NewMessageActivity extends AppCompatActivity {
         txtPhoneNumber.addTextChangedListener(mTextWatcher);
         txtMessage.addTextChangedListener(mTextWatcher);
         sendButton.setOnClickListener(mOnClickListener);
+
+        intentFilter.addAction("MESSAGES_ARRIVED");
+        registerReceiver(smsReceiver, intentFilter);
+
     }
 
     @Override
-    protected void onStart() {
-        Log.d("Life", "[NewMessageActivity]: onStart()");
-        super.onStart();
+    protected void onPause() {
+        Log.d("Life", "[NewMessageActivity]: onPause()");
+        if (MESSAGE_IS_SENT) {
+            SMSSender.getInstance(this).unregisterReceiver();
+            unregisterReceiver(smsReceiver);
+        }
+        super.onPause();
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Life", "[NewMessageActivity]: onCreate()");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_messages);
-
-        /* Make time as content of message for test. */
-        SimpleDateFormat sdf = new SimpleDateFormat();
-        sdf.applyPattern("[yy/MM/dd HH:mm:ss]");
-        Date date = new Date();
-        String txtTimeForTest = sdf.format(date) + " i miss u.";
-
-        /* Hide the default title. */
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data /*@Nullable Intent data*/) {
+        Log.d("110", "I'm function onActivityResult.");
+        switch (requestCode) {
+            case CONTACTS_CODE:
+                if (resultCode == RESULT_OK) {
+                    contactsPhone = data.getStringExtra("PHONE");
+                    contactsName = data.getStringExtra("NAME");
+                    String text = contactsPhone;
+                    Log.d("110", "Get: " + text);
+                    txtPhoneNumber.setText(text);
+                }
+                break;
+            default:
         }
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.WhiteSmoke));
-        }
-
-        txtPhoneNumber = (EditText) findViewById(R.id.txt_phone_number);
-        txtMessage = (EditText) findViewById(R.id.txt_message);
-        addContactsButton = (ImageButton) findViewById(R.id.add_contacts_button);
-        sendButton = (ImageButton) findViewById(R.id.send_button);
-
-        txtPhoneNumber.requestFocus();
-        txtMessage.setText(txtTimeForTest);
-        sendButton.setEnabled(false);
-        KeyboardController.showKeyboardDelay(txtPhoneNumber, 300);
     }
 
     public void sendMessageByApp(String phoneNumber, String message) {
@@ -172,11 +154,13 @@ public class NewMessageActivity extends AppCompatActivity {
             sendShortMessage(contactsPhone, message);
             MESSAGE_IS_SENT = true;
             Log.d("110", "Send a general message.");
+            sendButton.setEnabled(false);
         } else {
             Log.d("110", "Length > 70");
             sendMultipartMessage(contactsPhone, message);
             MESSAGE_IS_SENT = true;
             Log.d("110", "Send a long message.");
+            sendButton.setEnabled(false);
         }
     }
 
@@ -239,4 +223,13 @@ public class NewMessageActivity extends AppCompatActivity {
             }
         }
     };
+
+    class SimpleSMSReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent intent1 = new Intent(NewMessageActivity.this, MessagesReadActivity.class);
+            intent1.putExtra("ADDRESS", new RegexManager(contactsPhone, " ").replaceAll(""));
+            startActivity(intent1);
+        }
+    }
 }

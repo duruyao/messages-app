@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -35,27 +34,15 @@ public class ContactsSelectActivity extends AppCompatActivity {
     private int lastOffset = 0;
 
     @Override
-    protected void onDestroy() {
-        Log.d("Life", "[ContactsSelectActivity]: onDestroy()");
-        super.onDestroy();
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Life", "[ContactsSelectActivity]: onCreate()");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.contacts_select);
 
-    @Override
-    protected void onRestart() {
-        Log.d("Life", "[ContactsSelectActivity]: onRestart()");
-        super.onRestart();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d("Life", "[ContactsSelectActivity]: onStop()");
-        super.onStop();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d("Life", "[ContactsSelectActivity]: onPause()");
-        super.onPause();
+        if (Build.VERSION.SDK_INT >= 23) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.WhiteSmoke));
+        }
     }
 
     @Override
@@ -99,30 +86,6 @@ public class ContactsSelectActivity extends AppCompatActivity {
             ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(lastPosition, lastOffset);
         } catch (Exception e) {
             e.getStackTrace();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        Log.d("Life", "[ContactsSelectActivity]: onStart()");
-        super.onStart();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Life", "[ContactsSelectActivity]: onCreate()");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.contacts_select);
-
-        /* Hide default title. */
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.WhiteSmoke));
         }
     }
 

@@ -3,7 +3,6 @@ package com.dry.messages;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +59,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     public SessionsAdapter(Context context, List<List<Messages>> sessionsList) {
         this.sessionsList = sessionsList;
         this.context = context;
-        this.activity = ActivityController.getActivity(this.context);
+        this.activity = ActivityHelper.getActivity(this.context);
     }
 
     /**
@@ -72,8 +71,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         /* Load the item of RecyclerLayout. */
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sessions_item,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sessions_item, parent, false);
         /* Create instance of ViewHolder by passing the view parameter. */
         final ViewHolder holder = new ViewHolder(view);
 
@@ -81,13 +79,11 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
 
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(context, MessagesReadActivity.class);
-                Log.d("110", "Create a Intent.");
+                Intent intent = new Intent(context, MessagesReadActivity.class);
                 int position = holder.getAdapterPosition();
                 Messages messages = sessionsList.get(position).get(0);
-                // Toast.makeText(v.getContext(), "Select " + messages.getAddress(), Toast.LENGTH_SHORT).show();
-                intent1.putExtra("addressKey", messages.getAddress());
-                activity.startActivity(intent1);
+                intent.putExtra("ADDRESS", messages.getAddress());
+                activity.startActivity(intent);
 
             }
         });

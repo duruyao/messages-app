@@ -12,7 +12,7 @@ import androidx.appcompat.app.ActionBar;
  * @author DuRuyao
  * Create 19/03/31
  */
-public class ActivityController {
+public class ActivityHelper {
     /**
      * Get current activity.
      *
