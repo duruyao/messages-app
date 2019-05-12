@@ -6,10 +6,14 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
+import android.text.format.DateFormat;
 import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import java.util.Date;
 
 /**
  * A class of messages.
@@ -33,7 +37,8 @@ public class Messages {
     private String address;
     private int person;
     private String body;
-    private long date;
+    private String date;
+    private String dateWithoutTime;
     private int type;
     private int read;
 
@@ -47,7 +52,8 @@ public class Messages {
         this.address = address;
         this.person = person;
         this.body = body;
-        this.date = date;
+        this.date = (String) DateFormat.format("yyyy/MM/dd HH:mm:ss", new Date(date));
+        this.dateWithoutTime = (String) DateFormat.format("yyyy/MM/dd", new Date(date));
         this.type = type;
         this.read = read;
 
@@ -65,8 +71,12 @@ public class Messages {
         return this.body;
     }
 
-    public long getDate() {
+    public String getDate() {
         return this.date;
+    }
+
+    public String getDateWithoutTime() {
+        return this.dateWithoutTime;
     }
 
     public int getType() {
@@ -121,5 +131,4 @@ public class Messages {
         }
         return this.contactName;
     }
-
 }

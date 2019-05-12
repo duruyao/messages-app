@@ -37,7 +37,7 @@ public class MessagesDisplayer {
     private String address;
     private int person;
     private String body;
-    private int date;
+    private long date;
     private int type;
     private int read;
 
@@ -74,7 +74,7 @@ public class MessagesDisplayer {
                     address = cursor.getString(cursor.getColumnIndex("address"));
                     person = cursor.getInt(cursor.getColumnIndex("person"));
                     body = cursor.getString(cursor.getColumnIndex("body"));
-                    date = cursor.getInt(cursor.getColumnIndex("date"));
+                    date = cursor.getLong(cursor.getColumnIndex("date"));
                     type = cursor.getInt(cursor.getColumnIndex("type"));
                     read = cursor.getInt(cursor.getColumnIndex("read"));
                     if (address.equals(goalAddress)) {

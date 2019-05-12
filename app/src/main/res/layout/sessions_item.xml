@@ -11,7 +11,8 @@
         app:cardCornerRadius="14dp"
         app:cardElevation="4.8dp"
         app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        app:contentPadding="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +23,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/img_test"
+                android:src="@drawable/ic_head_img_24dp"
                 app:civ_border_color="@color/colorPrimary"
                 app:civ_border_width="3dp" />
 
@@ -39,9 +40,8 @@
                     android:layout_columnSpan="1"
                     android:layout_gravity="center_vertical"
                     android:text="Address"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/Black"/>
+                    android:textColor="@color/Black"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/sms_date"

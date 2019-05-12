@@ -103,7 +103,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Messages messages = messagesList.get(position);
-        holder.smsDate.setText(String.valueOf(messages.getDate()));
+        holder.smsDate.setText(messages.getDate());
         if (messages.getType() == TYPE_RECEIVED) {
             holder.smsBodyLeft.setText(messages.getBody());
             holder.layoutLeft.setVisibility(View.VISIBLE);

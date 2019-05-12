@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -32,8 +34,8 @@ public class NewMessageActivity extends AppCompatActivity {
 
     private EditText txtPhoneNumber;
     private EditText txtMessage;
-    private Button addButton;
-    private Button sendButton;
+    private ImageButton addContactsButton;
+    private ImageButton sendButton;
 
     private String contactsPhone;
     private String contactsName;
@@ -101,11 +103,10 @@ public class NewMessageActivity extends AppCompatActivity {
             Log.d("110","subscriptionId:"+subscriptionId);
         } */
 
-        addButton.setOnClickListener(mOnClickListener);
+        addContactsButton.setOnClickListener(mOnClickListener);
         txtPhoneNumber.addTextChangedListener(mTextWatcher);
         txtMessage.addTextChangedListener(mTextWatcher);
         sendButton.setOnClickListener(mOnClickListener);
-
     }
 
     @Override
@@ -118,7 +119,7 @@ public class NewMessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("Life", "[NewMessageActivity]: onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_message);
+        setContentView(R.layout.new_messages);
 
         /* Make time as content of message for test. */
         SimpleDateFormat sdf = new SimpleDateFormat();
@@ -132,10 +133,15 @@ public class NewMessageActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
+        if (Build.VERSION.SDK_INT >= 23) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.WhiteSmoke));
+        }
+
         txtPhoneNumber = (EditText) findViewById(R.id.txt_phone_number);
         txtMessage = (EditText) findViewById(R.id.txt_message);
-        addButton = (Button) findViewById(R.id.add_button);
-        sendButton = (Button) findViewById(R.id.send_button);
+        addContactsButton = (ImageButton) findViewById(R.id.add_contacts_button);
+        sendButton = (ImageButton) findViewById(R.id.send_button);
 
         txtPhoneNumber.requestFocus();
         txtMessage.setText(txtTimeForTest);
@@ -211,7 +217,7 @@ public class NewMessageActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.add_button:
+                case R.id.add_contacts_button:
                     Intent intent1 = new Intent(NewMessageActivity.this, ContactsSelectActivity.class);
                     startActivityForResult(intent1, CONTACTS_CODE);
                     break;
@@ -230,9 +236,7 @@ public class NewMessageActivity extends AppCompatActivity {
                         Log.d("110", e.getMessage());
                     }
                     break;
-
             }
         }
     };
-
 }

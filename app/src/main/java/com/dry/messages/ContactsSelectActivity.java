@@ -3,6 +3,7 @@ package com.dry.messages;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -118,6 +119,11 @@ public class ContactsSelectActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.WhiteSmoke));
+        }
     }
 
     private void readContacts() {
@@ -143,7 +149,6 @@ public class ContactsSelectActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
-
     }
 
     /**

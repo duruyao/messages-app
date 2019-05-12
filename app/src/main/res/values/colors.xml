@@ -11,4 +11,5 @@
     <color name="Lime">#00FF00</color>
     <color name="LimeGreen">#32CD32</color>
     <color name="LightGrey">#D3D3D3</color>
+    <color name="Gainsboro">#DCDCDC</color>
 </resources>

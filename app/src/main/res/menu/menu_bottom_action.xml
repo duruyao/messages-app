@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_new_conversation"
-        android:icon="@drawable/ic_add_24dp"
+        android:icon="@drawable/ic_write_24dp"
         android:title="@string/new_conversation"
         app:showAsAction="ifRoom" />
 
