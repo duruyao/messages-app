@@ -1,6 +1,7 @@
 package com.dry.messages;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,8 +85,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Messages messages = messagesList.get(position);
-                String toastText = "Address: " + messages.getAddress() + "\nPerson:  " + messages.getPerson() + "\nDate: " + messages.getDate() + "\nType: "
-                        + messages.getType() + "\nRead: " + messages.getRead() + "\nBody: " + messages.getBody();
+                String toastText = "ID: " + messages.getID() + "\nAddress: " + messages.getAddress() + "\nPerson:  " +
+                        messages.getPerson() + "\nDate: " + messages.getLongDate() + "\nType: " + messages.getType() +
+                        "\nRead: " + messages.getRead() + "\nBody: " + messages.getBody();
                 Toast.makeText(v.getContext(), toastText, Toast.LENGTH_SHORT).show();
 
             }
@@ -103,7 +105,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Messages messages = messagesList.get(position);
-        holder.smsDate.setText(messages.getDate());
+        holder.smsDate.setText(messages.getLongDate());
+
+        Log.v("12580", "Message Date: " + messages.getLongDate());
+
+
         if (messages.getType() == TYPE_RECEIVED) {
             holder.smsBodyLeft.setText(messages.getBody());
             holder.layoutLeft.setVisibility(View.VISIBLE);

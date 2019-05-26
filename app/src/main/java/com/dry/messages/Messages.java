@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -22,12 +23,13 @@ import java.util.Date;
  * Update [1] [yy/mm/dd hh:mm] [name] [description]
  */
 public class Messages {
-
+    final String SMS_URI_ALL = "content://sms/";
     private final int TYPE_RECEIVED = 1;
     private final int TYPE_SENT = 2;
     private final boolean BE_READ = true;
     private final boolean BE_NOT_READ = false;
 
+    private int id;
     private String contactName;
     private Context context;
     private Activity activity;
@@ -35,8 +37,8 @@ public class Messages {
     private String address;
     private int person;
     private String body;
-    private String date;
-    private String dateWithoutTime;
+    private String longDate;
+    private String shortDate;
     private int type;
     private int read;
 
@@ -50,11 +52,25 @@ public class Messages {
         this.address = address;
         this.person = person;
         this.body = body;
-        this.date = (String) DateFormat.format("yyyy/MM/dd HH:mm:ss", new Date(date));
-        this.dateWithoutTime = (String) DateFormat.format("yyyy/MM/dd", new Date(date));
+        this.longDate = (String) DateFormat.format("yyyy/MM/dd HH:mm:ss", new Date(date));
+        this.shortDate = new RegexManager(this.longDate, "\\s.*").replaceAll("");
         this.type = type;
         this.read = read;
+    }
 
+    public Messages(int id, String address, int person, String body, long date, int type, int read) {
+        this.id = id;
+        this.address = address;
+        this.person = person;
+        this.body = body;
+        this.longDate = (String) DateFormat.format("yyyy/MM/dd HH:mm:ss", new Date(date));
+        this.shortDate = new RegexManager(this.longDate, "\\s.*").replaceAll("");
+        this.type = type;
+        this.read = read;
+    }
+
+    public int getID() {
+        return this.id;
     }
 
     public String getAddress() {
@@ -69,12 +85,12 @@ public class Messages {
         return this.body;
     }
 
-    public String getDate() {
-        return this.date;
+    public String getLongDate() {
+        return this.longDate;
     }
 
-    public String getDateWithoutTime() {
-        return this.dateWithoutTime;
+    public String getShortDate() {
+        return this.shortDate;
     }
 
     public int getType() {
@@ -83,6 +99,30 @@ public class Messages {
 
     public int getRead() {
         return this.read;
+    }
+
+    public String getDateByID() {
+        long date;
+        Cursor cursor = null;
+        try {
+            cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, null,
+                    null, "date asc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    if(cursor.getInt(cursor.getColumnIndex("_id")) == id){
+                        date = cursor.getLong(cursor.getColumnIndex("date"));
+                        return (String) DateFormat.format("yyyy/MM/dd HH:mm:ss", new Date(date));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return "Can't find time";
     }
 
     /**

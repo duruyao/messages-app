@@ -29,6 +29,7 @@ public class MessagesDisplayer {
     private List<Messages> messagesList = new ArrayList<>();
     private Context context;
     private Activity activity;
+    private int id;
     private String goalAddress;
     private String address;
     private int person;
@@ -58,7 +59,7 @@ public class MessagesDisplayer {
         /* Instance an Adapter who contains of list of messages, and import it to the instance of RecyclerView. */
         MessagesAdapter adapter = new MessagesAdapter(this.context, messagesList);
         recyclerView.setAdapter(adapter);
-        recyclerView.scrollToPosition(adapter.getItemCount()-1);
+        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
     }
 
     public void readSMS() {
@@ -68,6 +69,7 @@ public class MessagesDisplayer {
             cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, null, null, "date asc");
             if (cursor != null) {
                 while (cursor.moveToNext()) {
+                    id = cursor.getInt(cursor.getColumnIndex("_id"));
                     address = cursor.getString(cursor.getColumnIndex("address"));
                     person = cursor.getInt(cursor.getColumnIndex("person"));
                     body = cursor.getString(cursor.getColumnIndex("body"));
@@ -75,7 +77,7 @@ public class MessagesDisplayer {
                     type = cursor.getInt(cursor.getColumnIndex("type"));
                     read = cursor.getInt(cursor.getColumnIndex("read"));
                     if (address.equals(goalAddress)) {
-                        messagesList.add(new Messages(address, person, body, date, type, read));
+                        messagesList.add(new Messages(id, address, person, body, date, type, read));
                     }
                 }
             }

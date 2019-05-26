@@ -3,6 +3,7 @@ package com.dry.messages;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +102,12 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         Messages messages = sessionsList.get(position).get(0);
         holder.smsAddress.setText(messages.getContactName(this.context));
-        holder.smsDate.setText(messages.getDateWithoutTime());
+
+
+        Log.v("12580", "Session Date: " + " " + messages.getID());
+
+
+        holder.smsDate.setText(messages.getDateByID());
         holder.smsBody.setText(messages.getBody());
     }
 

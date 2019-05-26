@@ -75,7 +75,7 @@ public class NewMessageActivity extends AppCompatActivity {
         smsReceiver = new SimpleSMSReceiver();
 
         txtPhoneNumber.requestFocus();
-        txtMessage.setText(txtTimeForTest);
+//        txtMessage.setText(txtTimeForTest);
         sendButton.setEnabled(false);
         KeyboardController.showKeyboardDelay(txtPhoneNumber, 300);
     }

@@ -33,6 +33,7 @@ public class SessionsDisplayer {
     private Context context;
     private Activity activity;
 
+    private int id;
     private String address;
     private int person;
     private String body;
@@ -135,6 +136,7 @@ public class SessionsDisplayer {
             cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, null, null, "date desc");
             if (cursor != null) {
                 while (cursor.moveToNext()) {
+                    id = cursor.getInt(cursor.getColumnIndex("_id"));
                     address = cursor.getString(cursor.getColumnIndex("address"));
                     person = cursor.getInt(cursor.getColumnIndex("person"));
                     body = cursor.getString(cursor.getColumnIndex("body"));
@@ -142,7 +144,7 @@ public class SessionsDisplayer {
                     type = cursor.getInt(cursor.getColumnIndex("type"));
                     read = cursor.getInt(cursor.getColumnIndex("read"));
 
-                    messagesList.add(new Messages(address, person, body, date, type, read));
+                    messagesList.add(new Messages(id, address, person, body, date, type, read));
                 }
             }
         } catch (Exception e) {
