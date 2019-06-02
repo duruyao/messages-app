@@ -75,7 +75,6 @@ public class NewMessageActivity extends AppCompatActivity {
         smsReceiver = new SimpleSMSReceiver();
 
         txtPhoneNumber.requestFocus();
-//        txtMessage.setText(txtTimeForTest);
         sendButton.setEnabled(false);
         KeyboardController.showKeyboardDelay(txtPhoneNumber, 300);
     }
@@ -108,7 +107,7 @@ public class NewMessageActivity extends AppCompatActivity {
     protected void onPause() {
         Log.d("Life", "[NewMessageActivity]: onPause()");
         if (MESSAGE_IS_SENT) {
-            SMSSender.getInstance(this).unregisterReceiver();
+             SMSSender.getInstance(this).unregisterReceiver();
             unregisterReceiver(smsReceiver);
         }
         super.onPause();
@@ -138,11 +137,11 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     public void sendShortMessage(String phoneNumber, String message) {
-        SMSSender.getInstance(this).SendMessage(phoneNumber, message);
+         SMSSender.getInstance(this).SendMessage(phoneNumber, message);
     }
 
     public void sendMultipartMessage(String phoneNumber, String message) {
-        SMSSender.getInstance(this).SendMessage2(phoneNumber, message);
+         SMSSender.getInstance(this).SendMessage2(phoneNumber, message);
     }
 
     public void send() {
@@ -165,8 +164,7 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case SEND_SMS_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

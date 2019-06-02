@@ -23,8 +23,8 @@ import java.util.List;
  * Create 19/03/28
  */
 public class MessagesDisplayer {
-    final private int READ_SMS_REQUEST_CODE = 121;
-    final String SMS_URI_ALL = "content://sms/";
+    private final int READ_SMS_REQUEST_CODE = 121;
+    private final String SMS_URI_ALL = "content://sms/";
 
     private List<Messages> messagesList = new ArrayList<>();
     private Context context;
@@ -37,6 +37,10 @@ public class MessagesDisplayer {
     private long date;
     private int type;
     private int read;
+
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
+    private MessagesAdapter adapter;
 
     public MessagesDisplayer(Context context, String goalAddress) {
         this.context = context;
@@ -52,33 +56,63 @@ public class MessagesDisplayer {
             readSMS();
         }
 
-        RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.messages_recyclerView);
+        recyclerView = (RecyclerView) activity.findViewById(R.id.messages_recyclerView);
         /* Set layout manager for an instance of RecyclerView. */
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         /* Instance an Adapter who contains of list of messages, and import it to the instance of RecyclerView. */
-        MessagesAdapter adapter = new MessagesAdapter(this.context, messagesList);
+        adapter = new MessagesAdapter(this.context, messagesList);
         recyclerView.setAdapter(adapter);
         recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+    }
+
+    public void refresh() {
+        Cursor cursor = null;
+        try {
+            cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, "address = ?", new String[]{goalAddress},
+                    "date desc");
+            if (cursor != null && cursor.moveToFirst()) {
+                id = cursor.getInt(cursor.getColumnIndex("_id"));
+                person = cursor.getInt(cursor.getColumnIndex("person"));
+                body = cursor.getString(cursor.getColumnIndex("body"));
+                date = cursor.getLong(cursor.getColumnIndex("date"));
+                type = cursor.getInt(cursor.getColumnIndex("type"));
+                read = cursor.getInt(cursor.getColumnIndex("read"));
+
+                if(id != messagesList.get(adapter.getItemCount() - 1).getID()){
+                    messagesList.add(new Messages(id, goalAddress, person, body, date, type, read, context));
+                    adapter.notifyItemInserted(adapter.getItemCount());
+                    recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     public void readSMS() {
         Log.d("110", "Call function readSMS().");
         Cursor cursor = null;
         try {
-            cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, null, null, "date asc");
+            cursor = activity.getContentResolver().query(Uri.parse(SMS_URI_ALL), null, "address = ?", new String[]{goalAddress},
+                    "date asc");
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     id = cursor.getInt(cursor.getColumnIndex("_id"));
-                    address = cursor.getString(cursor.getColumnIndex("address"));
+//                    address = cursor.getString(cursor.getColumnIndex("address"));
                     person = cursor.getInt(cursor.getColumnIndex("person"));
                     body = cursor.getString(cursor.getColumnIndex("body"));
                     date = cursor.getLong(cursor.getColumnIndex("date"));
                     type = cursor.getInt(cursor.getColumnIndex("type"));
                     read = cursor.getInt(cursor.getColumnIndex("read"));
-                    if (address.equals(goalAddress)) {
-                        messagesList.add(new Messages(id, address, person, body, date, type, read));
-                    }
+//                    if (address.equals(goalAddress)) {
+                    messagesList.add(new Messages(id, goalAddress, person, body, date, type, read, context));
+//                    }
                 }
             }
         } catch (Exception e) {

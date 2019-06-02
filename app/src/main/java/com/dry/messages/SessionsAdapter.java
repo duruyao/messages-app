@@ -101,13 +101,13 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Messages messages = sessionsList.get(position).get(0);
-        holder.smsAddress.setText(messages.getContactName(this.context));
+        holder.smsAddress.setText(messages.getContactName());
 
 
         Log.v("12580", "Session Date: " + " " + messages.getID());
 
 
-        holder.smsDate.setText(messages.getDateByID());
+        holder.smsDate.setText(messages.getShortDateAgain());
         holder.smsBody.setText(messages.getBody());
     }
 

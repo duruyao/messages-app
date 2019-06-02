@@ -144,7 +144,7 @@ public class SessionsDisplayer {
                     type = cursor.getInt(cursor.getColumnIndex("type"));
                     read = cursor.getInt(cursor.getColumnIndex("read"));
 
-                    messagesList.add(new Messages(id, address, person, body, date, type, read));
+                    messagesList.add(new Messages(id, address, person, body, date, type, read, context));
                 }
             }
         } catch (Exception e) {
