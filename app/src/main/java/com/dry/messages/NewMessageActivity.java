@@ -153,12 +153,14 @@ public class NewMessageActivity extends AppCompatActivity {
             sendShortMessage(contactsPhone, message);
             MESSAGE_IS_SENT = true;
             Log.d("110", "Send a general message.");
+            txtMessage.setText("");
             sendButton.setEnabled(false);
         } else {
             Log.d("110", "Length > 70");
             sendMultipartMessage(contactsPhone, message);
             MESSAGE_IS_SENT = true;
             Log.d("110", "Send a long message.");
+            txtMessage.setText("");
             sendButton.setEnabled(false);
         }
     }

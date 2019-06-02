@@ -147,11 +147,13 @@ public class MessagesReadActivity extends AppCompatActivity {
             sendShortMessage(goalAddress, message);
             MESSAGE_IS_SENT = true;
             Log.d("110", "Send a general message.");
+            txtMessage.setText("");
             sendButton.setEnabled(false);
         } else {
             Log.d("110", "Length > 70");
             sendMultipartMessage(goalAddress, message);
             MESSAGE_IS_SENT = true;
+            txtMessage.setText("");
             Log.d("110", "Send a long message.");
             sendButton.setEnabled(false);
         }

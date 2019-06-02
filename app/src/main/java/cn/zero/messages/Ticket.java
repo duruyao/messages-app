@@ -1,7 +1,4 @@
 package cn.zero.messages;
 
-public class Info {
-
-
-
+public class Ticket {
 }
